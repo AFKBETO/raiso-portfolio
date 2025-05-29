@@ -6,8 +6,8 @@ description: En savoir plus sur mon projets
 # À propos
 
 BUI Thu-Huong est une artiste plasticienne et multimédia née à Hanoï, Vietnam.
-Elle vit et travaille au Kremlin-Bicêtre, France.
-Elle a participé àplusieurs expositions collectives à Hanoï entre 2015 et 2018.
+Elle vit et travaille à l'Île-de-France, France.
+Elle a participé à plusieurs expositions collectives à Hanoï entre 2015 et 2018.
 
 En 2018, elle a entrepris une licence en arts plastiques à l'Université Lille 3.
 En 2020, elle a obtenu son master en arts plastiques à l'Université Paris 1.
