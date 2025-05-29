@@ -17,8 +17,7 @@ const items = ref<NavigationMenuItem[][]>([
 	[
 		{
 			to: '/',
-			slot: 'logo',
-			class: 'flex-none'
+			slot: 'logo'
 		},
 	],
 	[
@@ -35,18 +34,24 @@ const items = ref<NavigationMenuItem[][]>([
 			slot: 'activities',
 		},
 		{
-			to: '/contact',
-			slot: 'contact',
+			slot: 'mail'
 		},
+		{
+			slot: 'instagram'
+		}
 	]
 ]);
+
+const ui = {
+	childItem: ''
+}
 </script>
 
 <template>
 	<header>
-		<UNavigationMenu color="neutral" variant="link" :items="items" class="flex justify-around">
+		<UNavigationMenu color="neutral" variant="link" :items="items" class="mx-20">
 			<template #logo>
-				<img src="/logo.png" alt="Logo" class="h-16 rounded-full" />
+				<img src="/logo.png" alt="Logo" class="h-20 w-80 rounded-full" />
 			</template>
 			<template #home-label>
 				{{ navbarLabels.home }}
@@ -57,8 +62,11 @@ const items = ref<NavigationMenuItem[][]>([
 			<template #activities-label>
 				{{ navbarLabels.activities }}
 			</template>
-			<template #contact-label>
-				{{ navbarLabels.contact }}
+			<template #mail>
+				<UIcon name="i-lucide-mail" class="!size-8" />
+			</template>
+			<template #instagram>
+				<UIcon name="i-lucide-instagram" class="!size-8" />
 			</template>
 		</UNavigationMenu>
 	</header>
