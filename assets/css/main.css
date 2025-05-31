@@ -1,3 +1,9 @@
 @import "tailwindcss";
 @import "@nuxt/ui";
 @plugin "@tailwindcss/typography";
+
+
+
+.prose {
+  --tw-prose-headings: var(--color-white)
+}

@@ -32,7 +32,10 @@ export default defineNuxtConfig({
 				highlight: {
 					theme: 'github-light',
 				}
-			}
+			},
+		},
+		renderer:{
+			anchorLinks: false
 		}
 	}
 });
