@@ -24,7 +24,7 @@ const navbarSchema = z.object({
 	home: z.string(),
 	about: z.string(),
 	activities: z.string(),
-	contact: z.string(),
+	footer: z.string()
 });
 
 const pieceSchema = z.object({
