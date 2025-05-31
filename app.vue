@@ -1,73 +1,39 @@
 <script setup lang="ts">
-import type { NavigationMenuItem } from '@nuxt/ui';
-
 const locale = 'fr';
-
-definePageMeta({
-	colorMode: 'light',
-});
 
 const { data: navbarLabels } = await useAsyncData('/', () => {
 	return queryCollection('navbar')
 		.where('language', '=', locale)
 		.first();
 });
-
-const items = ref<NavigationMenuItem[][]>([
-	[
-		{
-			to: '/',
-			slot: 'logo'
-		},
-	],
-	[
-		{
-			to: '/',
-			slot: 'home',
-		},
-		{
-			to: '/about',
-			slot: 'about',
-		},
-		{
-			to: '/activities',
-			slot: 'activities',
-		},
-		{
-			slot: 'mail'
-		},
-		{
-			slot: 'instagram'
-		}
-	]
-]);
 </script>
 
 <template>
-	<header>
-		<UNavigationMenu color="neutral" variant="link" :items="items" class="mx-20">
-			<template #logo>
-				<img src="/logo.png" alt="Logo" class="h-20 w-80 rounded-full" />
-			</template>
-			<template #home-label>
+	<header class="px-20 bg-white w-full flex flex-row content-center justify-between">
+		<ULink as="button" to="/">
+			<img src="/logo.png" alt="Logo" class="h-20 w-80 rounded-full" />
+		</ULink>
+		<nav class="flex flex-row content-center gap-4 my-auto">
+			<ULink class="content-center text-black" active-class="underline underline-offset-2" as="button" to="/">
 				{{ navbarLabels?.home }}
-			</template>
-			<template #about-label>
+			</ULink>
+			<ULink class="content-center text-black" active-class="underline underline-offset-2" as="button" to="/about">
 				{{ navbarLabels?.about }}
-			</template>
-			<template #activities-label>
+			</ULink>
+			<ULink class="content-center text-black" active-class="underline underline-offset-2" as="button" to="/activities">
 				{{ navbarLabels?.activities }}
-			</template>
-			<template #mail>
-				<UIcon name="i-lucide-mail" class="!size-8" />
-			</template>
-			<template #instagram>
-				<UIcon name="i-lucide-instagram" class="!size-8" />
-			</template>
-		</UNavigationMenu>
+			</ULink>
+			<UIcon name="i-lucide-mail" class="!size-8" />
+			<UIcon name="i-lucide-instagram" class="!size-8" />
+		</nav>
 	</header>
 	<div>
 		<NuxtRouteAnnouncer />
 		<NuxtPage />
 	</div>
+	<footer class="fixed bottom-0 left-0 p-10 bg-neutral dark:bg-neutral-900 w-full">
+		{{ navbarLabels?.footer }}
+
+		<ScrollToTopButton />
+	</footer>
 </template>
