@@ -20,3 +20,11 @@ export type Piece = Work & {
 export type Series = Work & {
 	pieces: Piece[];
 };
+
+export function isPiece(work: Work): work is Piece {
+	return (work as Piece).size !== undefined;
+}
+
+export function isSeries(work: Work): work is Series {
+	return (work as Series).pieces !== undefined;
+}
