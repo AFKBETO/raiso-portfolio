@@ -19,12 +19,16 @@ const localeSchema = z.custom<{
 	).safeParse(data).success
 })
 
-const navbarSchema = z.object({
+const headerSchema = z.object({
 	language: z.string(),
 	home: z.string(),
 	about: z.string(),
-	activities: z.string(),
-	footer: z.string()
+	activities: z.string()
+});
+
+const footerSchema = z.object({
+	language: z.string(),
+	body: z.string(),
 });
 
 const pieceSchema = z.object({
@@ -51,10 +55,15 @@ export default defineContentConfig({
 			source: '**/**.md',
 			schema: contentSchema,
 		}),
-		navbar: defineCollection({
+		header: defineCollection({
 			type: 'data',
-			source: 'navbar/**.yml',
-			schema: navbarSchema,
+			source: 'header/**.yml',
+			schema: headerSchema,
+		}),
+		footer: defineCollection({
+			type: 'data',
+			source: 'footer/**.yml',
+			schema: footerSchema,
 		}),
 		works: defineCollection({
 			type: 'data',
