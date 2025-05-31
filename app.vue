@@ -41,10 +41,6 @@ const items = ref<NavigationMenuItem[][]>([
 		}
 	]
 ]);
-
-const ui = {
-	childItem: ''
-}
 </script>
 
 <template>
@@ -54,13 +50,13 @@ const ui = {
 				<img src="/logo.png" alt="Logo" class="h-20 w-80 rounded-full" />
 			</template>
 			<template #home-label>
-				{{ navbarLabels.home }}
+				{{ navbarLabels?.home }}
 			</template>
 			<template #about-label>
-				{{ navbarLabels.about }}
+				{{ navbarLabels?.about }}
 			</template>
 			<template #activities-label>
-				{{ navbarLabels.activities }}
+				{{ navbarLabels?.activities }}
 			</template>
 			<template #mail>
 				<UIcon name="i-lucide-mail" class="!size-8" />
