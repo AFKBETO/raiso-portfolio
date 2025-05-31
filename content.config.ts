@@ -69,9 +69,6 @@ export default defineContentConfig({
 			type: 'data',
 			source: 'data/works.json',
 			schema: z.object({
-				count: z.number(),
-				page: z.number(),
-				pageSize: z.number(),
 				results: z.array(pieceSchema.or(seriesSchema)),
 			}),
 		})

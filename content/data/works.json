@@ -1,7 +1,4 @@
 {
-	"count": 3,
-	"page": 1,
-	"pageSize": 10,
 	"results": [
 		{
 			"id": "1",
@@ -52,7 +49,7 @@
 		{
 			"id": "2",
 			"title": "Not Duchampland, not Turingland, not Disneyland",
-			"date": "2025-02-11",
+			"date": "2025-02-25",
 			"size": "52x37cm",
 			"material": {
 				"fr": "Fil acrylique, toile en cotton"
@@ -65,7 +62,7 @@
 		{
 			"id": "3",
 			"title": "Cake",
-			"date": "2025-04-11",
+			"date": "2025-04-20",
 			"size": "52x37cm",
 			"material": {
 				"fr": "Fil acrylique, toile en cotton"

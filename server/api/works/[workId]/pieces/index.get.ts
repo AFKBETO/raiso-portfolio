@@ -22,8 +22,8 @@ export default defineEventHandler(async (event) => {
   const query = getQuery(event);
   const page = parseInt(query.page as string || '1');
   const pageSize = parseInt(query.pageSize as string || '10');
-  const sliceStart = page * pageSize + 1;
-  const isPageInvalid = (page < 1) || (sliceStart > work.pieces.length);
+  const sliceStart = (page - 1) * pageSize;
+  const isPageInvalid = (page < 1) || (sliceStart >= work.pieces.length);
   if (isPageInvalid) {
     throw createError({
       statusCode: 400,
@@ -31,10 +31,17 @@ export default defineEventHandler(async (event) => {
     });
   }
   const sliceEnd = Math.min(sliceStart + pageSize, work.pieces.length);
-  const results = work.pieces.splice(sliceStart, sliceEnd);
+  const pieces = work.pieces.sort((pieceA, pieceB) => {
+		const dateA = Date.parse(pieceA.date.toString());
+    pieceA.date = new Date(dateA);
+		const dateB = Date.parse(pieceB.date.toString());
+    pieceB.date = new Date(dateB);
+		return dateB - dateA;
+	}) || [];
+  const results = work.pieces.slice(sliceStart, sliceEnd);
   
   const result = {
-    count: work.pieces.length,
+    count: pieces.length,
     page,
     pageSize,
     results
