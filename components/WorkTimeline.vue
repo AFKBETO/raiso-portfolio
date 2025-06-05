@@ -12,9 +12,6 @@ for (const work of works) {
   if (!workMapByYear.has(year)) {
     workMapByYear.set(year, []);
   }
-  if (work.title === 'N/A') {
-    work.title = work.pieces[0].title;
-  }
   workMapByYear.get(year)?.push(work);
 }
 
