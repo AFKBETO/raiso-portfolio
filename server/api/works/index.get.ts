@@ -1,14 +1,11 @@
-export default defineEventHandler(async (event) => {
-	const data = await queryCollection(event, 'works')
-		.first();
-	
-	const works = data?.results.sort((workA, workB) => {
-		const dateA = Date.parse(workA.date.toString());
-		workA.date = new Date(dateA);
-		const dateB = Date.parse(workB.date.toString());
-		workB.date = new Date(dateB);
-		return dateB - dateA;
-	}) || [];
+import { WorkInt, WorkModel } from "~/database/WorkModel";
+import { Page } from "~/types/page";
+
+export default defineEventHandler(async (event): Promise<Page<WorkInt>> => {
+  const data = await WorkModel.find();
+  const works = data.sort((workA, workB) => {
+    return workB.year - workA.year;
+  }) || [];
 	const query = getQuery(event);
   const page = parseInt(query.page as string || '1');
   const pageSize = parseInt(query.pageSize as string || '10');

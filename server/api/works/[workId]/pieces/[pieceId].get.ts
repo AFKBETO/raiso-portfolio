@@ -1,10 +1,8 @@
-import { isSeries, Work } from "~/types/work";
+import { WorkModel } from "~/database/WorkModel";
 
 export default defineEventHandler(async (event) => {
   const workId = getRouterParam(event, 'workId');
-  const data = await queryCollection(event, 'works')
-    .first();
-  const work = data?.results.find(work => work.id === workId);
+  const work = await WorkModel.findById(workId);
 
   if (!work) {
     throw createError({
@@ -13,7 +11,7 @@ export default defineEventHandler(async (event) => {
     });
   }
 
-  if (!isSeries(work)) {
+  if (work.title === 'N/A') {
     throw createError({
       statusCode: 400,
       statusMessage: 'Work is not a Series'
