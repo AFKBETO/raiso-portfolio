@@ -13,13 +13,13 @@ export interface PieceInt extends Document {
   description: {
     [k in Locale]: string;
   };
+  tags: string[];
 }
 
 export interface WorkInt extends Document {
   _id: string;
   title: string;
   year: number;
-  showcase: boolean;
   pieces: PieceInt[];
 }
 
@@ -37,15 +37,15 @@ export const PieceSchema = new Schema<PieceInt>({
   description: {
     type: Map,
     of: String,
-  }
+  },
+  tags: [String]
 });
 
 export const WorkSchema = new Schema<WorkInt>({
-    _id: Schema.Types.ObjectId,
-    title: String,
-    year: Number,
-    showcase: Boolean,
-    pieces: [PieceSchema]
+  _id: Schema.Types.ObjectId,
+  title: String,
+  year: Number,
+  pieces: [PieceSchema]
 })
 
 export interface WorkTitleInt extends Document {
@@ -54,6 +54,8 @@ export interface WorkTitleInt extends Document {
   type: 'series' | 'piece';
   firstPiece: PieceInt;
   locale: Locale;
+  tags: string[];
+}
 }
 
 export const WorkModel = model('Work', WorkSchema, 'works');

@@ -35,8 +35,7 @@ export async function getAllWorkTitles(locale: Locale = 'fr') {
     },
     {
       $project: {
-        pieces: 0,
-        showcase: 0
+        pieces: 0
       }
     }
   ]).sort({ year: 'desc' });
