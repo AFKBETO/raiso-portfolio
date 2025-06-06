@@ -56,6 +56,30 @@ export interface WorkTitleInt extends Document {
   locale: Locale;
   tags: string[];
 }
+
+export interface PieceLocaleInt extends Document {
+  _id: string;
+  locale: Locale;
+  title: string;
+  year: number;
+  dimension: string;
+  material: string;
+  imageUrl: string;
+  description: string;
+  tags: string[];
+}
+
+export interface PieceSimplifiedInt extends Document {
+  _id: string;
+  title: string;
+  imageUrl: string;
+}
+
+export interface WorkLocaleInt extends Document{
+  _id: string;
+  title: string;
+  year: number;
+  pieces: PieceSimplifiedInt[];
 }
 
 export const WorkModel = model('Work', WorkSchema, 'works');

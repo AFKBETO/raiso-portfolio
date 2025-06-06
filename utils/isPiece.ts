@@ -1,5 +1,5 @@
-import type { PieceInt } from "~/database/WorkModel";
+import type { PieceLocaleInt } from "~/database/WorkModel";
 
-export default function isPiece(item: any): item is PieceInt {
-  return (item as PieceInt).imageUrl !== undefined;
+export default function isPiece(item: any): item is PieceLocaleInt {
+  return (item as PieceLocaleInt).imageUrl !== undefined;
 }

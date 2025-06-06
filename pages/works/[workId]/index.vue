@@ -1,10 +1,11 @@
 <script setup lang="ts">
-import type { PieceInt, WorkInt } from '~/database/WorkModel';
-
+import PieceComponent from '~/components/PieceComponent.vue';
+import type { WorkLocaleInt, PieceLocaleInt } from '~/database/WorkModel';
+const locale = 'fr';
 const route = useRoute();
 const workId = route.params.workId;
 
-const { data } = await useFetch<WorkInt | PieceInt> (`/api/works/${workId}`);
+const { data } = await useFetch<WorkLocaleInt | PieceLocaleInt> (`/api/works/${workId}?locale=${locale}`);
 
 function getUI(item: any[]) {
   if (item.length === 3) {
@@ -23,24 +24,24 @@ definePageMeta({
 </script>
 
 <template>
-	<div class="w-full m-auto py-4 px-10 flex">
+	<div class="w-full m-auto p-10 flex">
     <template v-if="data === null">
       Item not found
     </template>
     <template v-else-if="isPiece(data)">
-      Piece
+      <PieceComponent :piece="data" />
     </template>
     <template v-else>
       <div class="m-auto">
-        <p class="text-2xl text-center font-sans my-4 font-bold">
+        <p class="text-2xl text-center font-sans mb-6 font-bold">
           {{ data.title.toLocaleUpperCase() }}
         </p>
         <UCarousel
           v-slot="{ item }"
           :items="data.pieces"
           :ui="getUI(data.pieces)"
-          arrows
-          dots>
+          :arrows="data.pieces.length > 3"
+          :dots="data.pieces.length > 3">
           <ULink :to="`/works/${workId}/pieces/${item._id}`">
             <NuxtPicture
               :src="`${item.imageUrl}?width=300`"

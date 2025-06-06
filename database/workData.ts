@@ -1,7 +1,8 @@
 import type { Locale } from '~/types/locale';
-import { WorkModel, type WorkTitleInt } from './WorkModel';
+import { type PieceLocaleInt, type WorkLocaleInt, WorkModel, type WorkTitleInt } from './WorkModel';
+import { Types } from 'mongoose';
 
-export async function getAllWorkTitles(locale: Locale = 'fr') {
+export async function getAllWorkTitles(locale: Locale = 'fr'): Promise<WorkTitleInt[]> {
   return await WorkModel.aggregate<WorkTitleInt>([{
       $addFields: {
         title: {
@@ -40,3 +41,57 @@ export async function getAllWorkTitles(locale: Locale = 'fr') {
     }
   ]).sort({ year: 'desc' });
 }
+
+export async function getWorkDetailLocaleFromId(workId: string, locale: Locale = 'fr'): Promise<WorkLocaleInt | PieceLocaleInt> {
+  const result = await WorkModel.aggregate<WorkLocaleInt | PieceLocaleInt>([
+    {
+      $match: {
+        _id: new Types.ObjectId(workId)
+      }
+    }, {
+      $addFields: {
+        pieces: {
+          $map: {
+            input: '$pieces',
+            as: 'piece',
+            in: {
+              _id: '$$piece._id',
+              title: '$$piece.title',
+              year: '$$piece.year',
+              dimension: '$$piece.dimension',
+              material: `$$piece.material.${locale}`,
+              imageUrl: '$$piece.imageUrl',
+              description: `$$piece.description.${locale}`,
+              locale: locale
+            }
+          }
+        }
+      }
+    }, {
+      $replaceRoot: {
+        newRoot: {
+          $cond: {
+            if: {
+              $eq: ['$title', 'N/A']
+            },
+            then: {
+              $arrayElemAt: ['$pieces',
+                0
+              ]
+            },
+            else: '$$ROOT'
+          }
+        }
+      }
+    }, {
+      $project: {
+        'pieces.year': 0,
+        'pieces.dimension': 0,
+        'pieces.material': 0,
+        'pieces.description': 0
+      }
+    }
+  ])
+  return result[0];
+}
+
