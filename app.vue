@@ -1,6 +1,6 @@
 <script setup lang="ts">
 
-const showHorizontalNavbar = ref(false);
+const showHorizontalNavbar = useHorizontalNavbar();
 
 function updateNavbar() {
 	const width = window.innerWidth;
@@ -20,9 +20,9 @@ onUnmounted(() => {
 
 <template>
 	<UApp>
-		<PortfolioHeader :showHorizontalNavbar="showHorizontalNavbar" />
+		<PortfolioHeader keepalive />
 		<NuxtRouteAnnouncer />
-		<NuxtPage />
+		<NuxtPage keepalive />
 		<PortfolioFooter />
 	</UApp>
 </template>

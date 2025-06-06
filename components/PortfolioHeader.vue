@@ -1,9 +1,7 @@
 <script setup lang="ts">
 import type { NavigationMenuItem } from '@nuxt/ui'
 
-defineProps<{
-	showHorizontalNavbar: boolean
-}>();
+const showHorizontalNavbar = useHorizontalNavbar();
 
 const locale = 'fr';
 
@@ -13,35 +11,27 @@ const { data: headerLabels } = await useAsyncData('/header', () => {
 		.first();
 });
 
-const isSlideoverOpen = ref(false);
-
-function closeSlideover(){
-	isSlideoverOpen.value = false;
-}
+const isSlideoverOpen = useSlideoverOpen();
 
 const verticalItems = ref<NavigationMenuItem[][]>([[
 	{
 		label: headerLabels.value?.about,
-		to: '/about',
-		onSelect: closeSlideover
+		to: '/about'
 	},
 	{
 		label: headerLabels.value?.activities,
-		to: '/activities',
-		onSelect: closeSlideover
+		to: '/activities'
 	},
 	{
 		label: 'Email',
 		icon: 'i-lucide-mail',
-		href: 'mailto:buithuhuong0804@gmail.com',
-		onSelect: closeSlideover
+		href: 'mailto:buithuhuong0804@gmail.com'
 	},
 	{
 		label: 'Instagram',
 		icon: 'i-lucide-instagram',
 		href: "https://www.instagram.com/raisohoho/",
-		target: "_blank",
-		onSelect: closeSlideover
+		target: "_blank"
 	}
 ]]);
 </script>
@@ -51,7 +41,7 @@ const verticalItems = ref<NavigationMenuItem[][]>([[
     <ULink as="button" to="/">
 			<img src="/logo.png" alt="Logo" class="h-20 w-80 rounded-full" />
 		</ULink>
-		<nav v-if="showHorizontalNavbar" class="flex flex-row content-center gap-4 my-auto">
+		<nav v-if="showHorizontalNavbar.valueOf()" class="flex flex-row content-center gap-4 my-auto">
 			<ULink class="content-center text-black" active-class="underline underline-offset-2" as="button" to="/">
 				{{ headerLabels?.home }}
 			</ULink>
@@ -72,10 +62,10 @@ const verticalItems = ref<NavigationMenuItem[][]>([[
 			<USlideover
 				v-model:open="isSlideoverOpen"
 				:close="{
-				color: 'error',
-				variant: 'outline',
-				class: 'rounded-full'
-			}">
+					color: 'error',
+					variant: 'outline',
+					class: 'rounded-full'
+				}">
 				<UButton label="Open" color="neutral" variant="subtle" />
 
 				<template #body>
