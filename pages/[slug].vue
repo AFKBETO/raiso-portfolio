@@ -6,8 +6,6 @@ definePageMeta({
 	colorMode: 'dark',
 });
 
-console.log('route', route.path);
-
 const { data } = await useAsyncData(route.path, () => {
 	return queryCollection('content')
 		.path(route.path + '/' + locale)
