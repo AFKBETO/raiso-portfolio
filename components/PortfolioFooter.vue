@@ -33,14 +33,18 @@
 </script>
 
 <template>
-  <footer class="fixed bottom-0 left-0 p-10 bg-white dark:bg-neutral-900 w-full">
+  <footer class="p-10 bg-white dark:bg-neutral-900 w-full">
 		{{ footerLabels?.body }}
-		<UButton
-			color="neutral"
-			:class="classNames"
-			@click="scrollToTop"
-			icon="i-lucide-triangle"
-			variant="outline">
-		</UButton>
+    <UTooltip  text="Scroll to top">
+      <UButton
+        size="xl"
+        color="neutral"
+        :class="classNames"
+        @click="scrollToTop"
+        icon="i-lucide-triangle"
+        variant="outline">
+      </UButton>
+    </UTooltip>
+		
 	</footer>
 </template>

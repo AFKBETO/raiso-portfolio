@@ -2,10 +2,10 @@
 </script>
 
 <template>
-	<PortfolioHeader />
-	<div>
+	<UApp>
+		<PortfolioHeader />
 		<NuxtRouteAnnouncer />
 		<NuxtPage />
-	</div>
-	<PortfolioFooter />
+		<PortfolioFooter />
+	</UApp>
 </template>
