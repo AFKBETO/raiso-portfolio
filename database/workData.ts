@@ -95,3 +95,37 @@ export async function getWorkDetailLocaleFromId(workId: string, locale: Locale =
   return result[0];
 }
 
+export async function fetchPieceFromWork(workId: string, pieceId: string, locale: Locale = 'fr'): Promise<PieceLocaleInt> {
+  const result = await WorkModel.aggregate<PieceLocaleInt>([
+    {
+      $match: {
+        _id: new Types.ObjectId(workId),
+        pieces: {
+          $elemMatch: {
+            _id: new Types.ObjectId(pieceId)
+          }
+        }
+      }
+    }, {
+      $replaceWith: {
+        $arrayElemAt: [
+          {
+            $filter: {
+              input: '$pieces',
+              as: 'piece',
+              cond: { $eq: ['$$piece._id', new Types.ObjectId(pieceId)] }
+            }
+          },
+          0
+        ]
+      }
+    }, {
+      $addFields: {
+        material: `$material.${locale}`,
+        description: `$description.${locale}`,
+        locale: locale
+      }
+    }
+  ]);
+  return result[0];
+}
