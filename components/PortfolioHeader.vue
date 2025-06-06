@@ -23,8 +23,12 @@ const { data: headerLabels } = await useAsyncData('/header', () => {
 			<ULink class="content-center text-black" active-class="underline underline-offset-2" as="button" to="/activities">
 				{{ headerLabels?.activities }}
 			</ULink>
-			<UIcon name="i-lucide-mail" class="!size-8" />
-			<UIcon name="i-lucide-instagram" class="!size-8" />
+			<ULink href="mailto:buithuhuong0804@gmail.com">
+				<UIcon name="i-lucide-mail" class="!size-8" />
+			</ULink>
+			<ULink href="https://www.instagram.com/raisohoho/" target="_blank" external>
+				<UIcon name="i-lucide-instagram" class="!size-8" />
+			</ULink>
 		</nav>
   </header>
 </template>
