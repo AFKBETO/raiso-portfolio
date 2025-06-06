@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import type { NavigationMenuItem } from '@nuxt/ui'
 
-const showHorizontalNavbar = useHorizontalNavbar();
+const isLargeScreen = useLargeScreen();
 
 const locale = 'fr';
 
@@ -41,7 +41,7 @@ const verticalItems = ref<NavigationMenuItem[][]>([[
     <ULink as="button" to="/">
 			<img src="/logo.png" alt="Logo" class="h-20 w-80 rounded-full" />
 		</ULink>
-		<nav v-if="showHorizontalNavbar.valueOf()" class="flex flex-row content-center gap-4 my-auto">
+		<nav v-if="isLargeScreen" class="flex flex-row content-center gap-4 my-auto">
 			<ULink class="content-center text-black" active-class="underline underline-offset-2" as="button" to="/">
 				{{ headerLabels?.home }}
 			</ULink>

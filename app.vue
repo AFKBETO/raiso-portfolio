@@ -1,10 +1,10 @@
 <script setup lang="ts">
 
-const showHorizontalNavbar = useHorizontalNavbar();
+const largeScreen = useLargeScreen();
 
 function updateNavbar() {
 	const width = window.innerWidth;
-	showHorizontalNavbar.value = width >= 768;
+	largeScreen.value = width >= 768;
 }
 
 onMounted(() => {
