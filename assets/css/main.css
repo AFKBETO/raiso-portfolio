@@ -5,5 +5,7 @@
 
 
 .prose {
-  --tw-prose-headings: var(--color-white)
+  --tw-prose-headings: var(--color-white);
+  --tw-prose-bold: var(--color-white);
+  --tw-prose-links: var(--color-cyan-400);
 }

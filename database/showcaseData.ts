@@ -10,6 +10,18 @@ export async function fetchAllShowcaseImages(): Promise<ShowcaseImgInt> {
         pipeline: [
           {
             $addFields: {
+              title: {
+                $cond: {
+                  if: { $eq: ['$title', 'N/A'] },
+                  then: {
+                    $getField: {
+                      field: 'title',
+                      input: { $arrayElemAt: ['$pieces', 0] },
+                    },
+                  },
+                  else: '$title',
+                },
+              },
               imageUrl: {
                 $getField: {
                   field: 'imageUrl',
