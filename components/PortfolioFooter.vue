@@ -33,7 +33,7 @@
 </script>
 
 <template>
-  <footer class="fixed bottom-0 left-0 p-10 bg-neutral dark:bg-neutral-900 w-full">
+  <footer class="fixed bottom-0 left-0 p-10 bg-white dark:bg-neutral-900 w-full">
 		{{ footerLabels?.body }}
 		<UButton
 			color="neutral"
