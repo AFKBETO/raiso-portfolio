@@ -7,7 +7,7 @@ const { data } = await useFetch<ShowcaseImgInt> ('/api/showcases');
 
 <template>
   <div class="flex flex-wrap gap-4 items-center">
-    <NuxtLink
+    <ULink
       :to="`/works/${work._id}`"
       v-for="work in data?.showcases"
       :key="work._id">
@@ -16,6 +16,6 @@ const { data } = await useFetch<ShowcaseImgInt> ('/api/showcases');
         height="300"
         :alt="work.title"
         :src="`${work.imageUrl}?width=300`" />
-    </NuxtLink>
+    </ULink>
   </div>
 </template>
