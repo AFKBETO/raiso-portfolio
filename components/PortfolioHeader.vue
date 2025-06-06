@@ -15,6 +15,10 @@ const isSlideoverOpen = useSlideoverOpen();
 
 const verticalItems = ref<NavigationMenuItem[][]>([[
 	{
+		label: headerLabels.value?.home,
+		to: '/'
+	},
+	{
 		label: headerLabels.value?.about,
 		to: '/about'
 	},
@@ -59,19 +63,17 @@ const verticalItems = ref<NavigationMenuItem[][]>([[
 			</ULink>
 		</nav>
 		<template v-else>
-			<USlideover
-				v-model:open="isSlideoverOpen"
-				:close="{
-					color: 'error',
-					variant: 'outline',
-					class: 'rounded-full'
-				}">
-				<UButton label="Open" color="neutral" variant="subtle" />
+			<div class="content-center">
+				<USlideover
+					v-model:open="isSlideoverOpen"
+					close>
+					<UButton size="xl" icon="i-lucide-menu" color="neutral" variant="subtle" />
 
-				<template #body>
-					<UNavigationMenu orientation="vertical" :items="verticalItems" class="data-[orientation=vertical]:w-48" />
-				</template>
-			</USlideover>
+					<template #body>
+						<UNavigationMenu orientation="vertical" :items="verticalItems" class="data-[orientation=vertical]:w-48" />
+					</template>
+				</USlideover>
+			</div>
 		</template>
   </header>
 </template>
