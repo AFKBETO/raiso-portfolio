@@ -9,7 +9,7 @@
 
 	const visible = "!fixed bottom-5 end-5 rounded-full";
   const invisible = visible + " invisible";
-  const classNames = ref();
+  const classNames = ref(invisible);
 
   function scrollToTop() {
     window.scrollTo({ top: 0, behavior: "smooth" });
