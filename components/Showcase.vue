@@ -2,11 +2,10 @@
 import type { ShowcaseImgInt } from '~/database/ShowcaseModel';
 
 const { data } = await useFetch<ShowcaseImgInt> ('/api/showcases');
-
 </script>
 
 <template>
-  <div class="flex flex-wrap gap-4 items-center">
+  <div class="flex flex-wrap gap-4 place-items-center justify-around md:justify-normal md:m-auto">
     <ULink
       :to="`/works/${work._id}`"
       v-for="work in data?.showcases"
