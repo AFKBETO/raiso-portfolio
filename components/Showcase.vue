@@ -10,12 +10,13 @@ const { data } = await useFetch<ShowcaseImgInt> ('/api/showcases');
     <ULink
       :to="`/works/${work._id}`"
       v-for="work in data?.showcases"
-      :key="work._id">
-      <NuxtPicture 
+      :key="work._id"
+      class="items-center">
+      <img 
         width="300"
-        height="300"
+        class="aspect-square object-scale-down"
         :alt="work.title"
-        :src="`${work.imageUrl}?width=300`" />
+        :src="`${work.imageUrl}?width=300`" >
     </ULink>
   </div>
 </template>
