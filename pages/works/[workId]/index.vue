@@ -47,6 +47,10 @@ onUnmounted(() => {
 definePageMeta({
 	colorMode: 'light',
 })
+
+useSeoMeta({
+	title: data.value?.title
+});
 </script>
 
 <template>

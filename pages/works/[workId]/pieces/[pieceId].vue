@@ -10,6 +10,12 @@ const { data } = await useFetch<PieceLocaleInt> (`/api/works/${workId}/pieces/${
 definePageMeta({
 	colorMode: 'light',
 })
+
+useSeoMeta({
+	title: data.value?.title,
+	description: data.value?.description,
+  articleTag: data.value?.tags
+});
 </script>
 
 <template>
