@@ -26,6 +26,11 @@ export default defineNuxtConfig({
 		'@nuxt/scripts',
 		'@nuxt/ui'
 	],
+	eslint: {
+		config: {
+			stylistic: true // <---
+		}
+	},
 	css: ['~/assets/css/main.css'],
 	vite: {
 		plugins: [
@@ -40,7 +45,7 @@ export default defineNuxtConfig({
 				}
 			},
 		},
-		renderer:{
+		renderer: {
 			anchorLinks: false
 		}
 	}
