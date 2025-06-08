@@ -9,12 +9,12 @@ const { data } = await useFetch<WorkLocaleInt | PieceLocaleInt> (`/api/works/${w
 
 function getUI(items: any[]) {
   if (items.length === 3) {
-    return { item: 'md:basis-1/2 lg:basis-1/3' };
+    return { item: 'flex flex-col md:basis-1/2 lg:basis-1/3' };
   }
   if (items.length === 2) {
-    return { item: 'md:basis-1/2' };
+    return { item: 'flex flex-col md:basis-1/2' };
   }
-  return undefined;
+  return { item: 'flex flex-col' };
 }
 
 const showArrows = ref(false);
@@ -63,7 +63,7 @@ definePageMeta({
           {{ data.title.toLocaleUpperCase() }}
         </p>
         <UCarousel
-        class="w-[300px] md:w-[600px] lg:w-full"
+          class="w-[300px] md:w-[600px] lg:w-full"
           v-slot="{ item }"
           :items="data.pieces"
           :ui="getUI(data.pieces)"
@@ -76,9 +76,9 @@ definePageMeta({
               width="300"
               class="aspect-square object-scale-down w-full">
           </ULink>
-          <ULink as="button" class="w-full block m-auto text-lg text-center font-sans my-4" :to="`/works/${workId}/pieces/${item._id}`">
+          <UButton as="button" color="secondary" class="m-auto text-lg text-center font-sans font-bold my-4" :to="`/works/${workId}/pieces/${item._id}`">
             {{ item.title }}
-          </ULink>
+          </UButton>
         </UCarousel>
       </div>
     </template>
