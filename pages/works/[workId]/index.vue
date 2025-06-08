@@ -75,7 +75,7 @@ useSeoMeta({
           :dots="showArrows">
           <ULink :to="`/works/${workId}/pieces/${item._id}`">
             <img
-              :src="`${item.imageUrl}?width=300`"
+              :src="parseImageSrc(item.imageUrl, 300)"
               :alt="item.title"
               width="300"
               class="aspect-square object-scale-down w-full">

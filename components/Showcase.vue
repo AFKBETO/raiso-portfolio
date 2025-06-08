@@ -15,7 +15,7 @@ const { data } = await useFetch<ShowcaseImgInt> ('/api/showcases');
         width="300"
         class="aspect-square object-scale-down"
         :alt="work.title"
-        :src="`${work.imageUrl}?width=300`" >
+        :src="parseImageSrc(work.imageUrl, 300)" >
     </ULink>
   </div>
 </template>

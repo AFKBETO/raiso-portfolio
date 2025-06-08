@@ -7,7 +7,9 @@ export default defineNuxtConfig({
 	debug: true,
 	runtimeConfig: {
 		mongoUri: '',
-		cdnUrl: '',
+		public: {
+			cdnUrl: '',
+		}
 	},
 	colorMode: {
 		preference: 'light', // default value of $colorMode.preference

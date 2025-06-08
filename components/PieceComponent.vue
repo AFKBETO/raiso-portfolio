@@ -12,7 +12,7 @@ const paragraphs = piece.description.split('\\n');
 <template>
   <div class="w-full m-auto py-8 px-10 grid grid-cols-1 md:grid-cols-2 gap-6 items-center">
     <img
-      :src="`${piece.imageUrl}?width=1000`"
+      :src="parseImageSrc(piece.imageUrl, 1000)"
       :alt="piece.title"
       class="aspect-square object-scale-down w-full">
     <div>
