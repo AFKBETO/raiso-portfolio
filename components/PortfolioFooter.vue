@@ -33,9 +33,14 @@
 </script>
 
 <template>
-  <footer class="p-10 bg-white dark:bg-neutral-900 w-full">
-		{{ footerLabels?.body }}
-    <UTooltip  text="Scroll to top">
+  <footer class="p-8 bg-white dark:bg-neutral-900 w-full justify-between flex flex-row mt-auto">
+    <p>
+      {{ footerLabels?.body }}
+    </p>
+    <p>
+      Powered by <ULink to="https://github.com/AFKBETO" target="_blank" external>AFKBETO</ULink>
+    </p>
+    <UTooltip text="Scroll to top">
       <UButton
         size="xl"
         color="neutral"
@@ -45,6 +50,5 @@
         variant="outline">
       </UButton>
     </UTooltip>
-		
-	</footer>
+  </footer>
 </template>

@@ -20,9 +20,13 @@ onUnmounted(() => {
 
 <template>
 	<UApp>
-		<PortfolioHeader keepalive />
-		<NuxtRouteAnnouncer />
-		<NuxtPage keepalive />
-		<PortfolioFooter />
+		<body class="flex flex-col min-h-screen">
+			<PortfolioHeader keepalive />
+			<main class="grow">
+				<NuxtRouteAnnouncer />
+				<NuxtPage keepalive />
+			</main>
+			<PortfolioFooter />
+		</body>
 	</UApp>
 </template>
