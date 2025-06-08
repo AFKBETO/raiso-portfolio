@@ -1,7 +1,7 @@
 import { getAllWorkTitles } from "~/database/workData";
-import { WorkTitleInt } from "~/database/WorkModel";
-import { Locale } from "~/types/locale";
-import { Page } from "~/types/page";
+import type { WorkTitleInt } from "~/database/WorkModel";
+import type { Locale } from "~/types/locale";
+import type { Page } from "~/types/page";
 
 export default defineEventHandler(async (event): Promise<Page<WorkTitleInt>> => {
   const query = getQuery(event);

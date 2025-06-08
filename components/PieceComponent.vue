@@ -28,7 +28,7 @@ const paragraphs = piece.description.split('\\n');
       <p class="pb-6">
         Dimension: {{ piece.dimension }}
       </p>
-      <p v-for="paragraph in paragraphs" class="text-justify">
+      <p v-for="(paragraph, index) in paragraphs" :key="index" class="text-justify">
         {{ paragraph }}
       </p>
     </div>

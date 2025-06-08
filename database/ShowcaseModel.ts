@@ -1,4 +1,5 @@
-import { Document, model, Schema } from "mongoose";
+import type { Document} from "mongoose";
+import { model, Schema } from "mongoose";
 import type { WorkTitleInt } from "./WorkModel";
 
 export interface ShowcaseInt extends Document {

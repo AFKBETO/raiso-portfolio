@@ -8,18 +8,19 @@ function updateNavbar() {
 }
 
 onMounted(() => {
-  updateNavbar();
-  window.addEventListener('resize', updateNavbar);
+	updateNavbar();
+	window.addEventListener('resize', updateNavbar);
 });
 
 onUnmounted(() => {
-  window.removeEventListener('resize', updateNavbar);
+	window.removeEventListener('resize', updateNavbar);
 });
 
 </script>
 
 <template>
 	<UApp>
+
 		<body class="flex flex-col min-h-screen">
 			<PortfolioHeader keepalive />
 			<main class="grow">

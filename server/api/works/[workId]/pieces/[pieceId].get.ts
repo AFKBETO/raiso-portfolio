@@ -1,5 +1,5 @@
 import { fetchPieceFromWork } from "~/database/workData";
-import { Locale } from "~/types/locale";
+import type { Locale } from "~/types/locale";
 
 export default defineEventHandler(async (event) => {
   const workId = getRouterParam(event, 'workId');

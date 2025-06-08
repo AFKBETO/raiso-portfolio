@@ -7,9 +7,9 @@ const { data } = await useFetch<ShowcaseImgInt> ('/api/showcases');
 <template>
   <div class="flex flex-wrap gap-4 place-items-center justify-around md:justify-normal md:m-auto">
     <ULink
-      :to="`/works/${work._id}`"
       v-for="work in data?.showcases"
       :key="work._id"
+      :to="`/works/${work._id}`"
       class="items-center">
       <img 
         width="300"

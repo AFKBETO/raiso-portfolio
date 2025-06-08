@@ -45,10 +45,9 @@
         size="xl"
         color="neutral"
         :class="classNames"
-        @click="scrollToTop"
         icon="i-lucide-triangle"
-        variant="outline">
-      </UButton>
+        variant="outline"
+        @click="scrollToTop"/>
     </UTooltip>
   </footer>
 </template>

@@ -32,7 +32,7 @@ const items = Array.from(workMapByYear.keys().map((year) => {
     <UAccordion
       type="multiple"
       :items="items"
-      :defaultValue="activeValue"
+      :default-value="activeValue"
     >
       <template #content="{ item }">
         <ULink 

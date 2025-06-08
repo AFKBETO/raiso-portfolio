@@ -43,7 +43,7 @@ const verticalItems = ref<NavigationMenuItem[][]>([[
 <template>
   <header class="px-20 bg-white w-full flex flex-row content-center justify-between">
     <ULink as="button" to="/">
-			<img src="/logo.png" alt="Logo" class="h-20 w-80 rounded-full" />
+			<img src="/logo.png" alt="Logo" class="h-20 w-80 rounded-full" >
 		</ULink>
 		<nav v-if="isLargeScreen" class="flex flex-row content-center gap-4 my-auto">
 			<ULink class="content-center text-black" active-class="underline underline-offset-2" as="button" to="/">

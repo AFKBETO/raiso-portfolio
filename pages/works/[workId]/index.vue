@@ -7,6 +7,7 @@ const workId = route.params.workId;
 
 const { data } = await useFetch<WorkLocaleInt | PieceLocaleInt> (`/api/works/${workId}?locale=${locale}`);
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 function getUI(items: any[]) {
   if (items.length === 3) {
     return { item: 'flex flex-col md:basis-1/2 lg:basis-1/3' };
@@ -67,8 +68,8 @@ useSeoMeta({
           {{ data.title.toLocaleUpperCase() }}
         </p>
         <UCarousel
-          class="w-[300px] md:w-[600px] lg:w-full"
           v-slot="{ item }"
+          class="w-[300px] md:w-[600px] lg:w-full"
           :items="data.pieces"
           :ui="getUI(data.pieces)"
           :arrows="showArrows"

@@ -1,6 +1,6 @@
 import { getWorkDetailLocaleFromId } from "~/database/workData";
-import { PieceLocaleInt, WorkLocaleInt } from "~/database/WorkModel";
-import { Locale } from "~/types/locale";
+import type { PieceLocaleInt, WorkLocaleInt } from "~/database/WorkModel";
+import type { Locale } from "~/types/locale";
 
 export default defineEventHandler(async (event): Promise<WorkLocaleInt | PieceLocaleInt> => {
   const workId = getRouterParam(event, 'workId');
