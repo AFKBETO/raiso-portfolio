@@ -5,6 +5,10 @@ export default defineNuxtConfig({
 	compatibilityDate: '2025-05-15',
 	devtools: { enabled: true },
 	debug: true,
+	runtimeConfig: {
+		mongoUri: '',
+		cdnUrl: '',
+	},
 	colorMode: {
 		preference: 'light', // default value of $colorMode.preference
 		fallback: 'light', // fallback value if not system preference found
