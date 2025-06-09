@@ -1,7 +1,7 @@
 ---
 title: À propos
 language: fr
-description: En savoir plus sur mon projets
+description: En savoir plus sur mes projets
 ---
 # À propos
 
