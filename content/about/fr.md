@@ -5,7 +5,7 @@ description: En savoir plus sur mon projets
 ---
 # À propos
 
-BUI Thu-Huong est une artiste plasticienne et multimédia née à Hanoï, Vietnam.
+BUI Thu Huong est une artiste plasticienne et multimédia née à Hanoï, Vietnam.
 Elle vit et travaille à l'Île-de-France, France.
 Elle a participé à plusieurs expositions collectives à Hanoï entre 2015 et 2018.
 
