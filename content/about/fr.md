@@ -28,9 +28,9 @@ qu’en grandissant. Animée d'un amour particulier pour la tendresse qu'apporte
 laine, qui lui inspire une idée de protection mais aussi de concession, combiné à
 des préoccupations concernant les problèmes sociaux contemporains, ses créations
 artistiques prennent une tournure profondément ironique mais sincère à la fois.
-L’une de ses techniques artistiques réside dans le contraste surprenant entre
-l’apparence douce et confortable du tapis et les images, les messages critiques,
-voire satiriques, qu’il véhicule.
+L’une de ses techniques artistiques réside dans le contraste entre l’apparence
+douce et confortable du tapis et les images, les messages critiques, voire 
+satiriques, qu’il véhicule.
 
 ---
 
