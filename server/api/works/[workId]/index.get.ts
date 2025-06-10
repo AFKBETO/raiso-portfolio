@@ -1,23 +1,23 @@
-import { getWorkDetailLocaleFromId } from "~/database/workData";
-import type { PieceLocaleInt, WorkLocaleInt } from "~/database/WorkModel";
-import type { Locale } from "~/types/locale";
+import { getWorkDetailLocaleFromId } from '~/database/workData';
+import type { PieceLocaleInt, WorkLocaleInt } from '~/database/WorkModel';
+import type { Locale } from '~/types/locale';
 
 export default defineEventHandler(async (event): Promise<WorkLocaleInt | PieceLocaleInt> => {
   const workId = getRouterParam(event, 'workId');
   if (!workId) {
     throw createError({
       statusCode: 400,
-      statusMessage: 'Bad request'
+      statusMessage: 'Bad request',
     });
   }
   const query = getQuery(event);
   const locale = query.locale as Locale || 'fr';
-	const work = await getWorkDetailLocaleFromId(workId, locale);
-	if (!work) {
+  const work = await getWorkDetailLocaleFromId(workId, locale);
+  if (!work) {
     throw createError({
       statusCode: 404,
-      statusMessage: 'Work not found'
+      statusMessage: 'Work not found',
     });
   }
-	return work;
-})
+  return work;
+});

@@ -1,4 +1,4 @@
 export default defineNuxtRouteMiddleware(() => {
-    const menuOpen = useSlideoverOpen() 
-    menuOpen.value = false 
-})
+  const menuOpen = useSlideoverOpen();
+  menuOpen.value = false;
+});

@@ -10,12 +10,14 @@ const { data: showcases } = await useFetch<WorkImgInt[]> ('/api/showcases');
       v-for="work in showcases"
       :key="work._id"
       :to="`/works/${work._id}`"
-      class="items-center">
-      <img 
+      class="items-center"
+    >
+      <img
         width="300"
         class="aspect-square object-scale-down"
         :alt="work.title"
-        :src="parseImageSrc(work.imageUrl, 300)" >
+        :src="parseImageSrc(work.imageUrl, 300)"
+      >
     </ULink>
   </div>
 </template>

@@ -3,4 +3,4 @@ export type Page<T> = {
   page: number;
   pageSize: number;
   results: T[];
-}
+};

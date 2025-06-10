@@ -1,5 +1,5 @@
-import { model, Schema, type Document } from "mongoose";
-import type { Locale } from "~/types/locale";
+import { model, Schema, type Document } from 'mongoose';
+import type { Locale } from '~/types/locale';
 
 export interface PieceInt extends Document {
   _id: string;
@@ -24,7 +24,6 @@ export interface WorkInt extends Document {
   pieces: PieceInt[];
 }
 
-
 export const PieceSchema = new Schema<PieceInt>({
   _id: Schema.Types.ObjectId,
   title: String,
@@ -32,14 +31,14 @@ export const PieceSchema = new Schema<PieceInt>({
   dimension: String,
   material: {
     type: Map,
-    of: String
+    of: String,
   },
   imageUrl: String,
   description: {
     type: Map,
     of: String,
   },
-  tags: [String]
+  tags: [String],
 });
 
 export const WorkSchema = new Schema<WorkInt>({
@@ -47,8 +46,8 @@ export const WorkSchema = new Schema<WorkInt>({
   title: String,
   year: Number,
   showcase: Boolean,
-  pieces: [PieceSchema]
-})
+  pieces: [PieceSchema],
+});
 
 export interface WorkTitleInt extends Document {
   title: string;
@@ -77,7 +76,7 @@ export interface PieceSimplifiedInt extends Document {
   imageUrl: string;
 }
 
-export interface WorkLocaleInt extends Document{
+export interface WorkLocaleInt extends Document {
   _id: string;
   title: string;
   year: number;
@@ -87,7 +86,7 @@ export interface WorkLocaleInt extends Document{
 export interface WorkImgInt extends Document {
   _id: string;
   title: string;
-  imageUrl:string;
+  imageUrl: string;
 }
 
 export const WorkModel = model('Work', WorkSchema, 'works');

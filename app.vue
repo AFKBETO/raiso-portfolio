@@ -1,33 +1,30 @@
 <script setup lang="ts">
-
 const largeScreen = useLargeScreen();
 
 function updateNavbar() {
-	const width = window.innerWidth;
-	largeScreen.value = width >= 768;
+  const width = window.innerWidth;
+  largeScreen.value = width >= 768;
 }
 
 onMounted(() => {
-	updateNavbar();
-	window.addEventListener('resize', updateNavbar);
+  updateNavbar();
+  window.addEventListener('resize', updateNavbar);
 });
 
 onUnmounted(() => {
-	window.removeEventListener('resize', updateNavbar);
+  window.removeEventListener('resize', updateNavbar);
 });
-
 </script>
 
 <template>
-	<UApp>
-
-		<body class="flex flex-col min-h-screen">
-			<PortfolioHeader keepalive />
-			<main class="grow">
-				<NuxtRouteAnnouncer />
-				<NuxtPage keepalive />
-			</main>
-			<PortfolioFooter />
-		</body>
-	</UApp>
+  <UApp>
+    <body class="flex flex-col min-h-screen">
+      <PortfolioHeader keepalive />
+      <main class="grow">
+        <NuxtRouteAnnouncer />
+        <NuxtPage keepalive />
+      </main>
+      <PortfolioFooter />
+    </body>
+  </UApp>
 </template>

@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import PieceComponent from '~/components/PieceComponent.vue';
 import type { WorkLocaleInt, PieceLocaleInt } from '~/database/WorkModel';
+
 const locale = 'fr';
 const route = useRoute();
 const workId = route.params.workId;
@@ -29,9 +30,11 @@ function updateShowArrows() {
   const width = window.innerWidth;
   if (width >= 1024) {
     showArrows.value = count > 3;
-  } else if (width >= 768) {
+  }
+  else if (width >= 768) {
     showArrows.value = count > 2;
-  } else {
+  }
+  else {
     showArrows.value = count > 1;
   }
 }
@@ -46,16 +49,16 @@ onUnmounted(() => {
 });
 
 definePageMeta({
-	colorMode: 'light',
-})
+  colorMode: 'light',
+});
 
 useSeoMeta({
-	title: data.value?.title
+  title: data.value?.title,
 });
 </script>
 
 <template>
-	<div class="w-full m-auto p-10 flex">
+  <div class="w-full m-auto p-10 flex">
     <template v-if="data === null">
       Item not found
     </template>
@@ -73,21 +76,26 @@ useSeoMeta({
           :items="data.pieces"
           :ui="getUI(data.pieces)"
           :arrows="showArrows"
-          :dots="showArrows">
+          :dots="showArrows"
+        >
           <ULink :to="`/works/${workId}/pieces/${item._id}`">
             <img
               :src="parseImageSrc(item.imageUrl, 300)"
               :alt="item.title"
               width="300"
-              class="aspect-square object-scale-down w-full">
+              class="aspect-square object-scale-down w-full"
+            >
           </ULink>
-          <UButton as="button" color="secondary" class="m-auto text-lg text-center font-sans font-bold my-4" :to="`/works/${workId}/pieces/${item._id}`">
+          <UButton
+            as="button"
+            color="secondary"
+            class="m-auto text-lg text-center font-sans font-bold my-4"
+            :to="`/works/${workId}/pieces/${item._id}`"
+          >
             {{ item.title }}
           </UButton>
         </UCarousel>
       </div>
     </template>
-	</div>
+  </div>
 </template>
-
-

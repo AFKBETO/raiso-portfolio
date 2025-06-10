@@ -26,7 +26,10 @@ const items = Array.from(workMapByYear.keys().map((year) => {
 
 <template>
   <div>
-    <div v-show="!isLargeScreen" class="text-lg text-bold">
+    <div
+      v-show="!isLargeScreen"
+      class="text-lg text-bold"
+    >
       My artworks
     </div>
     <UAccordion
@@ -35,7 +38,7 @@ const items = Array.from(workMapByYear.keys().map((year) => {
       :default-value="activeValue"
     >
       <template #content="{ item }">
-        <ULink 
+        <ULink
           v-for="work in workMapByYear.get(Number(item.label))"
           :key="work._id"
           :href="`/works/${work._id}`"

@@ -2,11 +2,10 @@
 import type { PieceLocaleInt } from '~/database/WorkModel';
 
 const { piece } = defineProps<{
-  piece: PieceLocaleInt
-}>()
+  piece: PieceLocaleInt;
+}>();
 
 const paragraphs = piece.description.split('\\n');
-
 </script>
 
 <template>
@@ -14,7 +13,8 @@ const paragraphs = piece.description.split('\\n');
     <img
       :src="parseImageSrc(piece.imageUrl, 1000)"
       :alt="piece.title"
-      class="aspect-square object-scale-down w-full">
+      class="aspect-square object-scale-down w-full"
+    >
     <div>
       <p class="text-xl">
         {{ piece.title }}
@@ -28,7 +28,11 @@ const paragraphs = piece.description.split('\\n');
       <p class="pb-6">
         Dimension: {{ piece.dimension }}
       </p>
-      <p v-for="(paragraph, index) in paragraphs" :key="index" class="text-justify">
+      <p
+        v-for="(paragraph, index) in paragraphs"
+        :key="index"
+        class="text-justify"
+      >
         {{ paragraph }}
       </p>
     </div>
