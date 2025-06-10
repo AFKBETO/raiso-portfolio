@@ -20,6 +20,7 @@ export interface WorkInt extends Document {
   _id: string;
   title: string;
   year: number;
+  showcase: boolean;
   pieces: PieceInt[];
 }
 
@@ -45,6 +46,7 @@ export const WorkSchema = new Schema<WorkInt>({
   _id: Schema.Types.ObjectId,
   title: String,
   year: Number,
+  showcase: Boolean,
   pieces: [PieceSchema]
 })
 
@@ -80,6 +82,12 @@ export interface WorkLocaleInt extends Document{
   title: string;
   year: number;
   pieces: PieceSimplifiedInt[];
+}
+
+export interface WorkImgInt extends Document {
+  _id: string;
+  title: string;
+  imageUrl:string;
 }
 
 export const WorkModel = model('Work', WorkSchema, 'works');

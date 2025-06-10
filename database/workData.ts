@@ -1,5 +1,5 @@
 import type { Locale } from '~/types/locale';
-import { type PieceLocaleInt, type WorkLocaleInt, WorkModel, type WorkTitleInt } from './WorkModel';
+import { type PieceLocaleInt, type WorkImgInt, type WorkLocaleInt, WorkModel, type WorkTitleInt } from './WorkModel';
 import { Types } from 'mongoose';
 
 export async function getAllWorkTitles(locale: Locale = 'fr'): Promise<WorkTitleInt[]> {
@@ -128,4 +128,43 @@ export async function fetchPieceFromWork(workId: string, pieceId: string, locale
     }
   ]);
   return result[0];
+}
+
+export async function fetchAllShowcaseImages(): Promise<WorkImgInt[]> {
+  const result = await WorkModel.aggregate<WorkImgInt>([
+    {
+      $match: {
+        showcase: true
+      }
+    },
+    {
+      $addFields: {
+        title: {
+          $cond: {
+            if: { $eq: ['$title', 'N/A'] },
+            then: {
+              $getField: {
+                field: 'title',
+                input: { $arrayElemAt: ['$pieces', 0] },
+              },
+            },
+            else: '$title',
+          },
+        },
+        imageUrl: {
+          $getField: {
+            field: 'imageUrl',
+            input: { $arrayElemAt: ['$pieces', 0] }
+          }
+        }
+      }
+    },
+    {
+      $project: {
+        title: 1,
+        imageUrl: 1
+      }
+    }
+  ]);
+  return result;
 }
