@@ -28,8 +28,11 @@ export default defineNuxtConfig({
 	],
 	eslint: {
 		config: {
-			stylistic: true // <---
-		}
+			stylistic: {
+				indent: 2,
+				semi: true,
+			}
+		},
 	},
 	css: ['~/assets/css/main.css'],
 	vite: {
