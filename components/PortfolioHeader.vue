@@ -5,13 +5,16 @@ const isLargeScreen = useLargeScreen();
 
 const locale = useNuxtLocale();
 
-const { data: headerLabels } = await useAsyncData('/header', () => {
-  return queryCollection('header')
+const { data: headerLabels } = await useAsyncData('/header', async () => {
+  const header = await queryCollection('header')
     .where('language', '=', locale.value)
-    .first()
-    || queryCollection('header')
-      .where('language', '=', 'fr')
-      .first();
+    .first();
+  if (header) {
+    return header;
+  }
+  return await queryCollection('header')
+    .where('language', '=', 'fr')
+    .first();
 }, {
   watch: [locale],
 });
@@ -51,12 +54,14 @@ function getFlagIcon() {
 const localeItems = ref<DropdownMenuItem[]>([
   {
     icon: 'i-cif-gb',
+    label: 'English',
     onClick: () => {
       locale.value = 'en';
     },
   },
   {
     icon: 'i-cif-fr',
+    label: 'Français',
     onClick: () => {
       locale.value = 'fr';
     },
@@ -123,9 +128,7 @@ const localeItems = ref<DropdownMenuItem[]>([
       <UDropdownMenu
         :items="localeItems"
         :content="{
-          align: 'start',
-          side: 'bottom',
-          sideOffset: 8,
+          align: 'end',
         }"
       >
         <UIcon

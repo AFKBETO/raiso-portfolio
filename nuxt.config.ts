@@ -12,7 +12,13 @@ export default defineNuxtConfig({
     '@nuxt/scripts',
     '@nuxt/ui',
   ],
-  devtools: { enabled: true },
+  devtools: {
+    enabled: true,
+
+    timeline: {
+      enabled: true,
+    },
+  },
   css: ['~/assets/css/main.css'],
   colorMode: {
     preference: 'light', // default value of $colorMode.preference

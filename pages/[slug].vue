@@ -6,13 +6,16 @@ definePageMeta({
   colorMode: 'dark',
 });
 
-const { data } = await useAsyncData(route.path, () => {
-  return queryCollection('content')
+const { data } = await useAsyncData(route.path, async () => {
+  const content = await queryCollection('content')
     .path(route.path + '/' + locale.value)
-    .first()
-    || queryCollection('content')
-      .path(route.path + '/fr')
-      .first();
+    .first();
+  if (content) {
+    return content;
+  }
+  return queryCollection('content')
+    .path(route.path + '/fr')
+    .first();
 }, {
   watch: [locale],
 });
