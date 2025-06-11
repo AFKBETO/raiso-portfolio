@@ -23,6 +23,27 @@ const { data } = await useAsyncData(route.path, async () => {
 useSeoMeta({
   title: data.value?.title,
   description: data.value?.description,
+  ogTitle: data.value?.title,
+  ogDescription: data.value?.description,
+  ogImage: '/favicon.png',
+  ogUrl: `https://buithuhuong.work${route.path}`,
+  twitterTitle: data.value?.title,
+  twitterDescription: data.value?.description,
+  twitterImage: '/favicon.png',
+  twitterCard: 'summary',
+});
+
+useHead({
+  htmlAttrs: {
+    lang: locale.value,
+  },
+  link: [
+    {
+      rel: 'icon',
+      type: 'image/png',
+      href: '/favicon.png',
+    },
+  ],
 });
 </script>
 

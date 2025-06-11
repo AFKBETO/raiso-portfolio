@@ -55,8 +55,45 @@ definePageMeta({
   colorMode: 'light',
 });
 
+function getSeoDescription() {
+  if (isPiece(data.value)) {
+    return data.value.description;
+  }
+  return data.value?.title || '';
+}
+
+function getSeoTags() {
+  if (isPiece(data.value)) {
+    return data.value.tags;
+  }
+  return undefined;
+}
+
 useSeoMeta({
   title: data.value?.title,
+  description: getSeoDescription(),
+  articleTag: getSeoTags(),
+  ogTitle: data.value?.title,
+  ogDescription: getSeoDescription(),
+  ogImage: getSeoImage(data.value),
+  ogUrl: `https://buithuhuong.work/works/${workId}`,
+  twitterTitle: data.value?.title,
+  twitterDescription: getSeoDescription(),
+  twitterImage: getSeoImage(data.value),
+  twitterCard: 'summary',
+});
+
+useHead({
+  htmlAttrs: {
+    lang: locale.value,
+  },
+  link: [
+    {
+      rel: 'icon',
+      type: 'image/png',
+      href: '/favicon.png',
+    },
+  ],
 });
 </script>
 

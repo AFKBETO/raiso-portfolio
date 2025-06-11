@@ -19,6 +19,11 @@ const footerSchema = z.object({
   body: z.string(),
 });
 
+const seoSchema = z.object({
+  language: z.string(),
+  description: z.string(),
+});
+
 export default defineContentConfig({
   collections: {
     content: defineCollection({
@@ -35,6 +40,11 @@ export default defineContentConfig({
       type: 'data',
       source: 'footer/**.yml',
       schema: footerSchema,
+    }),
+    seo: defineCollection({
+      type: 'data',
+      source: 'seo/**.yml',
+      schema: seoSchema,
     }),
   },
 });

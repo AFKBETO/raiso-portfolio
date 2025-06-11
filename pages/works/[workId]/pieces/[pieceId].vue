@@ -19,6 +19,27 @@ useSeoMeta({
   title: data.value?.title,
   description: data.value?.description,
   articleTag: data.value?.tags,
+  ogTitle: data.value?.title,
+  ogDescription: data.value?.description,
+  ogImage: getSeoImage(data.value),
+  ogUrl: `https://buithuhuong.work/works/${workId}/pieces/${pieceId}`,
+  twitterTitle: data.value?.title,
+  twitterDescription: data.value?.description,
+  twitterImage: getSeoImage(data.value),
+  twitterCard: 'summary',
+});
+
+useHead({
+  htmlAttrs: {
+    lang: locale.value,
+  },
+  link: [
+    {
+      rel: 'icon',
+      type: 'image/png',
+      href: '/favicon.png',
+    },
+  ],
 });
 </script>
 
