@@ -1,9 +1,9 @@
 import { Types } from 'mongoose';
-import { type PieceLocaleInt, type WorkImgInt, type WorkLocaleInt, WorkModel, type WorkTitleInt } from './WorkModel';
+import { type PieceLocaleInt, type WorkImgInt, type WorkLocaleInt, WorkModel, type WorkTimelineInt } from './WorkModel';
 import type { Locale } from '~/types/locale';
 
-export async function getAllWorkTitles(locale: Locale = 'fr'): Promise<WorkTitleInt[]> {
-  return await WorkModel.aggregate<WorkTitleInt>([{
+export async function getAllWorkTitles(): Promise<WorkTimelineInt[]> {
+  return await WorkModel.aggregate<WorkTimelineInt>([{
     $addFields: {
       title: {
         $cond: {
@@ -17,29 +17,33 @@ export async function getAllWorkTitles(locale: Locale = 'fr'): Promise<WorkTitle
           else: '$title',
         },
       },
-      type: {
-        $cond: {
-          if: { $eq: ['$title', 'N/A'] },
-          then: 'piece',
-          else: 'series',
-        },
-      },
-      firstPiece: { $arrayElemAt: ['$pieces', 0] },
-    },
-  },
-  {
-    $addFields: {
-      'firstPiece.material': `$firstPiece.material.${locale}`,
-      'firstPiece.description': `$firstPiece.description.${locale}`,
-      'locale': `${locale}`,
     },
   },
   {
     $project: {
       pieces: 0,
+      showcase: 0,
     },
   },
-  ]).sort({ year: 'desc' });
+  {
+    $group: {
+      _id: '$year',
+      works: {
+        $push: {
+          _id: '$_id',
+          title: '$title',
+        },
+      },
+    },
+  },
+  {
+    $project: {
+      year: '$_id',
+      _id: 0,
+      works: 1,
+    },
+  },
+  ]).sort({ year: -1 });
 }
 
 export async function getWorkDetailLocaleFromId(workId: string, locale: Locale = 'fr'): Promise<WorkLocaleInt | PieceLocaleInt> {

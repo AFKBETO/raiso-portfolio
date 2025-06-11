@@ -50,12 +50,13 @@ export const WorkSchema = new Schema<WorkInt>({
 });
 
 export interface WorkTitleInt extends Document {
+  _id: string;
   title: string;
+}
+
+export interface WorkTimelineInt {
   year: number;
-  type: 'series' | 'piece';
-  firstPiece: PieceInt;
-  locale: Locale;
-  tags: string[];
+  works: WorkTitleInt[];
 }
 
 export interface PieceLocaleInt extends Document {

@@ -1,20 +1,18 @@
 <script setup lang="ts">
-import type { WorkInt } from '~/database/WorkModel';
-import type { Page } from '~/types/page';
+import type { WorkTimelineInt, WorkTitleInt } from '~/database/WorkModel';
 
-const { data } = await useFetch<Page<WorkInt>> ('/api/works');
 const isLargeScreen = useLargeScreen();
 
-const workMapByYear = new Map<number, WorkInt[]>();
-const works = data?.value?.results || [];
-const activeValue: string[] = [];
-for (const work of works) {
-  const year = work.year;
-  if (!workMapByYear.has(year)) {
-    workMapByYear.set(year, []);
-  }
-  workMapByYear.get(year)?.push(work);
+const { data } = await useFetch<WorkTimelineInt[]> ('/api/works', {
+  key: 'works-timeline',
+});
+const years = data.value || [];
+
+const workMapByYear = new Map<number, WorkTitleInt[]>();
+for (const year of years) {
+  workMapByYear.set(year.year, year.works);
 }
+const activeValue: string[] = [];
 
 const items = Array.from(workMapByYear.keys().map((year) => {
   activeValue.push(activeValue.length.toString());
