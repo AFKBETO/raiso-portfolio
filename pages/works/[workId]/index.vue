@@ -128,8 +128,9 @@ useHead({
           </ULink>
           <UButton
             as="button"
-            color="secondary"
-            class="m-auto text-lg text-center font-sans font-bold my-4"
+            color="neutral"
+            variant="outline"
+            class=" w-full rounded-none hover:bg-black justify-center hover:text-white !text-center font-sans font-bold my-4"
             :to="`/works/${workId}/pieces/${item._id}`"
           >
             {{ item.title }}
