@@ -1,14 +1,19 @@
 <script setup lang="ts">
-import type { NavigationMenuItem } from '@nuxt/ui';
+import type { NavigationMenuItem, DropdownMenuItem } from '@nuxt/ui';
 
 const isLargeScreen = useLargeScreen();
 
-const locale = 'fr';
+const locale = useNuxtLocale();
 
 const { data: headerLabels } = await useAsyncData('/header', () => {
   return queryCollection('header')
-    .where('language', '=', locale)
-    .first();
+    .where('language', '=', locale.value)
+    .first()
+    || queryCollection('header')
+      .where('language', '=', 'fr')
+      .first();
+}, {
+  watch: [locale],
 });
 
 const isSlideoverOpen = useSlideoverOpen();
@@ -38,6 +43,25 @@ const verticalItems = ref<NavigationMenuItem[][]>([[
     target: '_blank',
   },
 ]]);
+
+function getFlagIcon() {
+  return locale.value === 'en' ? 'i-cif-gb' : 'i-cif-fr';
+}
+
+const localeItems = ref<DropdownMenuItem[]>([
+  {
+    icon: 'i-cif-gb',
+    onClick: () => {
+      locale.value = 'en';
+    },
+  },
+  {
+    icon: 'i-cif-fr',
+    onClick: () => {
+      locale.value = 'fr';
+    },
+  },
+]);
 </script>
 
 <template>
@@ -96,6 +120,19 @@ const verticalItems = ref<NavigationMenuItem[][]>([[
           class="!size-8"
         />
       </ULink>
+      <UDropdownMenu
+        :items="localeItems"
+        :content="{
+          align: 'start',
+          side: 'bottom',
+          sideOffset: 8,
+        }"
+      >
+        <UIcon
+          :name="getFlagIcon()"
+          class="!size-8"
+        />
+      </UDropdownMenu>
     </nav>
     <template v-else>
       <div class="content-center">

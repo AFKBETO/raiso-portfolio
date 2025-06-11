@@ -1,10 +1,15 @@
 <script setup lang="ts">
-const locale = 'fr';
+const locale = useNuxtLocale();
 
 const { data: footerLabels } = await useAsyncData('/footer', () => {
   return queryCollection('footer')
-    .where('language', '=', locale)
-    .first();
+    .where('language', '=', locale.value)
+    .first()
+    || queryCollection('footer')
+      .where('language', '=', 'fr')
+      .first();
+}, {
+  watch: [locale],
 });
 
 const visible = '!fixed bottom-10 end-5 rounded-full';

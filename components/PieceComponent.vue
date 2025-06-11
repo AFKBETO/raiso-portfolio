@@ -5,7 +5,7 @@ const { piece } = defineProps<{
   piece: PieceLocaleInt;
 }>();
 
-const paragraphs = piece.description.split('\\n');
+const paragraphs = computed(() => piece.description.split('\\n'));
 </script>
 
 <template>

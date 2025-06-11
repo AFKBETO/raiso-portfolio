@@ -2,11 +2,14 @@
 import PieceComponent from '~/components/PieceComponent.vue';
 import type { WorkLocaleInt, PieceLocaleInt } from '~/database/WorkModel';
 
-const locale = 'fr';
+const locale = useNuxtLocale();
 const route = useRoute();
 const workId = route.params.workId;
 
-const { data } = await useFetch<WorkLocaleInt | PieceLocaleInt> (`/api/works/${workId}?locale=${locale}`);
+const { data } = await useFetch<WorkLocaleInt | PieceLocaleInt> (`/api/works/${workId}`, {
+  key: `work-${workId}`,
+  query: { locale: locale },
+});
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 function getUI(items: any[]) {

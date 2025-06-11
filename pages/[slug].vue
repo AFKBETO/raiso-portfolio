@@ -1,6 +1,6 @@
 <script setup lang="ts">
 const route = useRoute();
-const locale = 'fr';
+const locale = useNuxtLocale();
 
 definePageMeta({
   colorMode: 'dark',
@@ -8,8 +8,13 @@ definePageMeta({
 
 const { data } = await useAsyncData(route.path, () => {
   return queryCollection('content')
-    .path(route.path + '/' + locale)
-    .first();
+    .path(route.path + '/' + locale.value)
+    .first()
+    || queryCollection('content')
+      .path(route.path + '/fr')
+      .first();
+}, {
+  watch: [locale],
 });
 
 useSeoMeta({

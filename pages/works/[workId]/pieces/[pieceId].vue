@@ -2,11 +2,14 @@
 import PieceComponent from '~/components/PieceComponent.vue';
 import type { PieceLocaleInt } from '~/database/WorkModel';
 
-const locale = 'fr';
+const locale = useNuxtLocale();
 const route = useRoute();
 const { workId, pieceId } = route.params;
 
-const { data } = await useFetch<PieceLocaleInt> (`/api/works/${workId}/pieces/${pieceId}?locale=${locale}`);
+const { data } = await useFetch<PieceLocaleInt> (`/api/works/${workId}/pieces/${pieceId}`, {
+  query: { locale: locale },
+  key: `piece-${workId}-${pieceId}`,
+});
 
 definePageMeta({
   colorMode: 'light',
