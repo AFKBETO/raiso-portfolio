@@ -17,6 +17,7 @@ const { data } = await useAsyncData(route.path, async () => {
     .path(route.path + '/fr')
     .first();
 }, {
+  lazy: true,
   watch: [locale],
 });
 
