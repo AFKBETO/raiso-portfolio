@@ -19,6 +19,31 @@ const { data: headerLabels } = await useAsyncData('/header', async () => {
   watch: [locale],
 });
 
+const iconFr = 'i-flag-fr-1x1';
+const iconEn = 'i-flag-gb-1x1';
+const iconCircleFr = 'i-circle-flags-fr';
+const iconCircleEn = 'i-circle-flags-en';
+
+const flagCircleIcon = computed(() => locale.value === 'en' ? iconCircleEn : iconCircleFr);
+const flagSquareIcon = computed(() => locale.value === 'en' ? iconEn : iconFr);
+
+const localeItems = ref<DropdownMenuItem[]>([
+  {
+    icon: iconEn,
+    label: 'English',
+    onClick: () => {
+      locale.value = 'en';
+    },
+  },
+  {
+    icon: iconFr,
+    label: 'Français',
+    onClick: () => {
+      locale.value = 'fr';
+    },
+  },
+]);
+
 const isSlideoverOpen = useSlideoverOpen();
 
 const verticalItems = ref<NavigationMenuItem[][]>([[
@@ -45,28 +70,26 @@ const verticalItems = ref<NavigationMenuItem[][]>([[
     href: 'https://www.instagram.com/raisohoho/',
     target: '_blank',
   },
+  {
+    slot: 'flag',
+    children: [{
+      icon: iconEn,
+      label: 'English',
+      onSelect: () => {
+        isSlideoverOpen.value = false;
+        locale.value = 'en';
+      },
+    },
+    {
+      icon: iconFr,
+      label: 'Français',
+      onSelect: () => {
+        isSlideoverOpen.value = false;
+        locale.value = 'fr';
+      },
+    }],
+  },
 ]]);
-
-function getFlagIcon() {
-  return locale.value === 'en' ? 'i-cif-gb' : 'i-cif-fr';
-}
-
-const localeItems = ref<DropdownMenuItem[]>([
-  {
-    icon: 'i-cif-gb',
-    label: 'English',
-    onClick: () => {
-      locale.value = 'en';
-    },
-  },
-  {
-    icon: 'i-cif-fr',
-    label: 'Français',
-    onClick: () => {
-      locale.value = 'fr';
-    },
-  },
-]);
 </script>
 
 <template>
@@ -83,10 +106,10 @@ const localeItems = ref<DropdownMenuItem[]>([
     </ULink>
     <nav
       v-if="isLargeScreen"
-      class="flex flex-row content-center gap-4 my-auto"
+      class="flex flex-row content-center gap-4 my-auto align-center"
     >
       <ULink
-        class="content-center text-black"
+        class="content-center text-black "
         active-class="underline underline-offset-2"
         as="button"
         to="/"
@@ -109,7 +132,10 @@ const localeItems = ref<DropdownMenuItem[]>([
       >
         {{ headerLabels?.activities }}
       </ULink>
-      <ULink href="mailto:buithuhuong0804@gmail.com">
+      <ULink
+        href="mailto:buithuhuong0804@gmail.com"
+        class="align-center"
+      >
         <UIcon
           name="i-lucide-mail"
           class="!size-8"
@@ -119,6 +145,7 @@ const localeItems = ref<DropdownMenuItem[]>([
         href="https://www.instagram.com/raisohoho/"
         target="_blank"
         external
+        class="align-center"
       >
         <UIcon
           name="i-lucide-instagram"
@@ -131,17 +158,21 @@ const localeItems = ref<DropdownMenuItem[]>([
           align: 'end',
         }"
       >
-        <UIcon
-          :name="getFlagIcon()"
-          class="!size-8"
-        />
+        <ULink
+          class="align-center"
+        >
+          <UIcon
+            :name="flagCircleIcon"
+            class="!size-7"
+          />
+        </ULink>
       </UDropdownMenu>
     </nav>
     <template v-else>
       <div class="content-center">
         <USlideover
           v-model:open="isSlideoverOpen"
-          close
+          keepalive
         >
           <UButton
             size="xl"
@@ -149,13 +180,19 @@ const localeItems = ref<DropdownMenuItem[]>([
             color="neutral"
             variant="subtle"
           />
-
           <template #body>
             <UNavigationMenu
+              keepalive
               orientation="vertical"
               :items="verticalItems"
               class="data-[orientation=vertical]:w-48"
-            />
+            >
+              <template #flag>
+                <UIcon
+                  :name="flagSquareIcon"
+                />
+              </template>
+            </UNavigationMenu>
           </template>
         </USlideover>
       </div>
