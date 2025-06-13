@@ -70,7 +70,7 @@ const localeItems = ref<DropdownMenuItem[]>([
 </script>
 
 <template>
-  <header class="px-20 bg-white w-full flex flex-row content-center justify-between">
+  <header class="px-4 sm:px-7 md:px-10 lg:px-20 bg-white w-full flex flex-row content-center justify-between">
     <ULink
       as="button"
       to="/"
