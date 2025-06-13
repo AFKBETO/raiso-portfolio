@@ -178,7 +178,7 @@ const verticalItems = ref<NavigationMenuItem[][]>([[
             size="xl"
             icon="i-lucide-menu"
             color="neutral"
-            variant="subtle"
+            variant="ghost"
           />
           <template #body>
             <UNavigationMenu
