@@ -1,7 +1,14 @@
 <template>
   <div class="w-full m-auto py-4 px-10 flex flex-col-reverse md:flex-row gap-10">
     <WorkTimeline class="basis-2xs" />
-    <PortfolioShowcase />
+    <div class="flex flex-col gap-4">
+      <ContentRenderer
+        v-if="data"
+        class="prose !max-w-none"
+        :value="data"
+      />
+      <PortfolioShowcase />
+    </div>
   </div>
 </template>
 
@@ -23,6 +30,21 @@ const { data: seo } = await useAsyncData('seo', async () => {
     .where('language', '=', 'fr')
     .first();
 }, {
+  watch: [locale],
+});
+
+const { data } = await useAsyncData('/home', async () => {
+  const content = await queryCollection('content')
+    .path('/home/' + locale.value)
+    .first();
+  if (content) {
+    return content;
+  }
+  return queryCollection('content')
+    .path('/home/fr')
+    .first();
+}, {
+  lazy: true,
   watch: [locale],
 });
 
