@@ -1,75 +1,37 @@
-# Nuxt Minimal Starter
+# Portfolio
 
-Look at the [Nuxt documentation](https://nuxt.com/docs/getting-started/introduction) to learn more.
+This repository is the codebase for the portfolio at [https://buithuhuong.work/](https://buithuhuong.work/).
+This is still a work in progress and is subject to change on demand of the website's owner.
 
-## Setup
+## How to deploy on local machine
 
-Make sure to install dependencies:
+### Prequisites
 
+1. Git
+2. Node.js v22.14.0
+3. Download [PNPM](https://pnpm.io/installation).
+
+### Clone and install dependencies
 ```bash
-# npm
-npm install
-
-# pnpm
-pnpm install
-
-# yarn
-yarn install
-
-# bun
-bun install
+git clone https://github.com/AFKBETO/raiso-portfolio.git
+cd raiso-portfolio
+pnpm i
 ```
 
-## Development Server
+### Set up environment variable file
+
+Add a ``.env`` file at the project's root directory.
+
+```
+NUXT_MONGO_URI=<your-mongo-connection-string>
+NUXT_PUBLIC_CDN_URL=<your-base-cdn-url>
+```
+
+### Start the development Server
 
 Start the development server on `http://localhost:3000`:
 
 ```bash
-# npm
-npm run dev
-
 # pnpm
 pnpm dev
-
-# yarn
-yarn dev
-
-# bun
-bun run dev
 ```
-
-## Production
-
-Build the application for production:
-
-```bash
-# npm
-npm run build
-
-# pnpm
-pnpm build
-
-# yarn
-yarn build
-
-# bun
-bun run build
-```
-
-Locally preview production build:
-
-```bash
-# npm
-npm run preview
-
-# pnpm
-pnpm preview
-
-# yarn
-yarn preview
-
-# bun
-bun run preview
-```
-
-Check out the [deployment documentation](https://nuxt.com/docs/getting-started/deployment) for more information.
