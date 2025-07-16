@@ -8,7 +8,8 @@
 		"generate": "nuxt generate",
 		"preview": "nuxt preview",
 		"postinstall": "nuxt prepare",
-		"lint": "eslint . --fix"
+		"lint": "eslint . --fix",
+		"prepare": "husky"
 	},
 	"dependencies": {
 		"@nuxt/content": "3.5.1",
@@ -33,6 +34,14 @@
 		"@iconify-json/circle-flags": "^1.2.6",
 		"@iconify-json/flag": "^1.2.6",
 		"@iconify-json/lucide": "^1.2.45",
-		"@tailwindcss/typography": "git+https://github.com/tailwindcss/typography.git"
-	}
+		"@tailwindcss/typography": "git+https://github.com/tailwindcss/typography.git",
+		"husky": "^9.1.7",
+		"lint-staged": "^16.1.2",
+		"pre-commit": "^1.2.2"
+	},
+  "lint-staged": {
+    "**/*.{js,ts,vue}": [
+      "eslint --fix"
+    ]
+  }
 }
