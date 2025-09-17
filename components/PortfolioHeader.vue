@@ -56,10 +56,6 @@ const verticalItems = ref<NavigationMenuItem[][]>([[
     to: '/about',
   },
   {
-    label: headerLabels.value?.activities,
-    to: '/activities',
-  },
-  {
     label: 'Email',
     icon: 'i-lucide-mail',
     href: 'mailto:buithuhuong0804@gmail.com',
@@ -123,14 +119,6 @@ const verticalItems = ref<NavigationMenuItem[][]>([[
         to="/about"
       >
         {{ headerLabels?.about }}
-      </ULink>
-      <ULink
-        class="content-center text-black"
-        active-class="underline underline-offset-2"
-        as="button"
-        to="/activities"
-      >
-        {{ headerLabels?.activities }}
       </ULink>
       <ULink
         href="mailto:buithuhuong0804@gmail.com"
