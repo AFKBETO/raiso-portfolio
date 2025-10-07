@@ -13,7 +13,7 @@ const { data } = await useFetch<WorkLocaleInt | PieceLocaleInt> (`/api/works/${w
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 function getUI(items: any[]) {
-  if (items.length === 3) {
+  if (items.length >= 3) {
     return { item: 'flex flex-col md:basis-1/2 lg:basis-1/3' };
   }
   if (items.length === 2) {
