@@ -1,9 +1,17 @@
-import { Types } from 'mongoose';
+import { Types, type PipelineStage } from 'mongoose';
 import { type PieceLocaleInt, type PieceWithWorkIdInt, type WorkImgInt, type WorkLocaleInt, WorkModel, type WorkTimelineInt } from './WorkModel';
 import type { Locale } from '~/types/locale';
 
 export async function getAllWorkTitles(): Promise<WorkTimelineInt[]> {
   return await WorkModel.aggregate<WorkTimelineInt>([{
+    $fill: {
+      output: {
+        priority: {
+          value: 0,
+        },
+      },
+    },
+  }, {
     $addFields: {
       title: {
         $cond: {
@@ -32,6 +40,7 @@ export async function getAllWorkTitles(): Promise<WorkTimelineInt[]> {
         $push: {
           _id: '$_id',
           title: '$title',
+          priority: '$priority',
         },
       },
     },
@@ -40,10 +49,16 @@ export async function getAllWorkTitles(): Promise<WorkTimelineInt[]> {
     $project: {
       year: '$_id',
       _id: 0,
-      works: 1,
+      works: {
+        $sortArray: {
+          input: '$works',
+          sortBy: { priority: -1, title: 1 },
+        },
+      },
+      priority: 1,
     },
   },
-  ]).sort({ year: -1 });
+  ]).sort({ year: -1, priority: -1 });
 }
 
 export async function getWorkDetailLocaleFromId(workId: string, locale: Locale = 'fr'): Promise<WorkLocaleInt | PieceLocaleInt> {
@@ -54,6 +69,10 @@ export async function getWorkDetailLocaleFromId(workId: string, locale: Locale =
       },
     }, {
       $addFields: {
+        description: {
+          $ifNull: [`$description.${locale}`, ''],
+        },
+        locale: locale,
         pieces: {
           $map: {
             input: '$pieces',
@@ -63,9 +82,9 @@ export async function getWorkDetailLocaleFromId(workId: string, locale: Locale =
               title: '$$piece.title',
               year: '$$piece.year',
               dimension: '$$piece.dimension',
-              material: `$$piece.material.${locale}`,
+              material: { $ifNull: [`$$piece.material.${locale}`, ''] },
               imageUrl: '$$piece.imageUrl',
-              description: `$$piece.description.${locale}`,
+              description: { $ifNull: [`$$piece.description.${locale}`, ''] },
               tags: '$$piece.tags',
               locale: locale,
             },
@@ -143,8 +162,8 @@ export async function fetchPieceFromWork(workId: string, pieceId: string, locale
       },
     }, {
       $addFields: {
-        material: `$material.${locale}`,
-        description: `$description.${locale}`,
+        material: { $ifNull: [`$material.${locale}`, ''] },
+        description: { $ifNull: [`$description.${locale}`, ''] },
         locale: locale,
       },
     },
@@ -191,43 +210,54 @@ export async function fetchAllShowcaseImages(): Promise<WorkImgInt[]> {
   return result;
 }
 
-export async function fetchAllPieces(): Promise<PieceWithWorkIdInt[]> {
-  const result = await WorkModel.aggregate<PieceWithWorkIdInt>([
-    {
-      $project: {
-        pieces: 1,
-        title: 1,
+export async function fetchAllPieces(isShow: boolean = false): Promise<PieceWithWorkIdInt[]> {
+  const pipeline: PipelineStage[] = [];
+  pipeline.push({
+    $project: {
+      pieces: 1,
+      title: 1,
+    },
+  }, {
+    $unwind: '$pieces',
+  });
+  if (isShow) {
+    pipeline.push({
+      $match: {
+        'pieces.isShow': true,
       },
-    }, {
-      $unwind: '$pieces',
-    }, {
-      $addFields: {
-        'pieces.workId': {
-          $cond: {
-            if: { $ne: ['$title', 'N/A'] },
-            then: '$_id',
-            else: '$$REMOVE',
-          },
+    });
+  }
+  pipeline.push({
+    $addFields: {
+      'pieces.workId': {
+        $cond: {
+          if: { $ne: ['$title', 'N/A'] },
+          then: '$_id',
+          else: '$$REMOVE',
         },
-        'pieces._id': {
-          $cond: {
-            if: { $eq: ['$title', 'N/A'] },
-            then: '$_id',
-            else: '$pieces._id',
-          },
+      },
+      'pieces._id': {
+        $cond: {
+          if: { $eq: ['$title', 'N/A'] },
+          then: '$_id',
+          else: '$pieces._id',
         },
       },
-    }, {
-      $replaceRoot: {
-        newRoot: '$pieces',
-      },
-    }, {
-      $project: {
-        dimension: 0,
-        material: 0,
-        description: 0,
+      'pieces.isShow': {
+        $ifNull: ['$pieces.isShow', false],
       },
     },
-  ]);
+  }, {
+    $replaceRoot: {
+      newRoot: '$pieces',
+    },
+  }, {
+    $project: {
+      dimension: 0,
+      material: 0,
+      description: 0,
+    },
+  });
+  const result = await WorkModel.aggregate<PieceWithWorkIdInt>(pipeline).sort({ year: -1 });
   return result;
 }

@@ -136,6 +136,11 @@ useHead({
             {{ item.title }}
           </UButton>
         </UCarousel>
+        <div class="mt-4">
+          <p class="text-sm text-gray-500">
+            {{ data.description }}
+          </p>
+        </div>
       </div>
     </template>
   </div>

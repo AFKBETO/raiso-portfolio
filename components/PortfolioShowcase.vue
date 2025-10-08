@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import type { PieceWithWorkIdInt } from '~/database/WorkModel';
 
-const { data: pieces } = await useFetch<PieceWithWorkIdInt[]> ('/api/pieces');
+const { data: pieces } = await useFetch<PieceWithWorkIdInt[]> ('/api/pieces?isShow=true');
 
 function parseLink(piece: PieceWithWorkIdInt) {
   if (!piece.workId) {

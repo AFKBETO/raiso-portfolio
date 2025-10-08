@@ -43,10 +43,15 @@ const paragraphs = computed(() => piece.description.split('\\n'));
       <p>
         {{ pieceLabels?.year }}: {{ piece.year }}
       </p>
-      <p>
+      <p
+        v-if="piece.material && piece.material !== '' && piece.material !== 'N/A'"
+      >
         {{ pieceLabels?.materials }}: {{ piece.material }}
       </p>
-      <p class="pb-6">
+      <p
+        v-if="piece.dimension && piece.dimension !== '' && piece.dimension !== 'N/A'"
+        class="pb-6"
+      >
         {{ pieceLabels?.dimension }}: {{ piece.dimension }}
       </p>
       <p

@@ -14,6 +14,7 @@ export interface PieceInt extends Document {
     [k in Locale]: string;
   };
   tags: string[];
+  isShow: boolean;
 }
 
 export interface WorkInt extends Document {
@@ -21,6 +22,10 @@ export interface WorkInt extends Document {
   title: string;
   year: number;
   showcase: boolean;
+  priority: number;
+  description: {
+    [k in Locale]: string;
+  };
   pieces: PieceInt[];
 }
 
@@ -39,6 +44,10 @@ export const PieceSchema = new Schema<PieceInt>({
     of: String,
   },
   tags: [String],
+  isShow: {
+    type: Boolean,
+    default: false,
+  },
 });
 
 export const WorkSchema = new Schema<WorkInt>({
@@ -46,7 +55,15 @@ export const WorkSchema = new Schema<WorkInt>({
   title: String,
   year: Number,
   showcase: Boolean,
+  description: {
+    type: Map,
+    of: String,
+  },
   pieces: [PieceSchema],
+  priority: {
+    type: Number,
+    default: 0,
+  },
 });
 
 export interface WorkTitleInt extends Document {
@@ -56,6 +73,7 @@ export interface WorkTitleInt extends Document {
 
 export interface WorkTimelineInt {
   year: number;
+  priority: number;
   works: WorkTitleInt[];
 }
 
@@ -69,6 +87,7 @@ export interface PieceLocaleInt extends Document {
   imageUrl: string;
   description: string;
   tags: string[];
+  isShow: boolean;
   workId?: string;
   workTitle?: string;
 }
@@ -85,6 +104,7 @@ export interface PieceWithWorkIdInt extends Document {
   year: number;
   imageUrl: string;
   tags: string[];
+  isShow: boolean;
   workId?: string;
 }
 
@@ -92,6 +112,7 @@ export interface WorkLocaleInt extends Document {
   _id: string;
   title: string;
   year: number;
+  description: string;
   pieces: PieceSimplifiedInt[];
 }
 
