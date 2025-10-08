@@ -5,6 +5,22 @@ const { piece } = defineProps<{
   piece: PieceLocaleInt;
 }>();
 
+const locale = useNuxtLocale();
+
+const { data: pieceLabels } = await useAsyncData('/pieceLabels', async () => {
+  const pieceLabels = await queryCollection('piece')
+    .where('language', '=', locale.value)
+    .first();
+  if (pieceLabels) {
+    return pieceLabels;
+  }
+  return await queryCollection('piece')
+    .where('language', '=', 'fr')
+    .first();
+}, {
+  watch: [locale],
+});
+
 const paragraphs = computed(() => piece.description.split('\\n'));
 </script>
 
@@ -19,14 +35,19 @@ const paragraphs = computed(() => piece.description.split('\\n'));
       <p class="text-xl">
         {{ piece.title }}
       </p>
-      <p>
-        {{ piece.year }}
+      <p
+        v-if="piece.workId"
+      >
+        {{ pieceLabels?.work }}: <ULink :to="`/works/${piece.workId}`">{{ piece.workTitle }}</ULink>
       </p>
       <p>
-        {{ piece.material }}
+        {{ pieceLabels?.year }}: {{ piece.year }}
+      </p>
+      <p>
+        {{ pieceLabels?.materials }}: {{ piece.material }}
       </p>
       <p class="pb-6">
-        Dimension: {{ piece.dimension }}
+        {{ pieceLabels?.dimension }}: {{ piece.dimension }}
       </p>
       <p
         v-for="(paragraph, index) in paragraphs"

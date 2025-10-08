@@ -24,6 +24,15 @@ const seoSchema = z.object({
   description: z.string(),
 });
 
+const pieceSchema = z.object({
+  language: z.string(),
+  work: z.string(),
+  year: z.string(),
+  materials: z.string(),
+  dimension: z.string(),
+  tags: z.string(),
+});
+
 export default defineContentConfig({
   collections: {
     content: defineCollection({
@@ -45,6 +54,11 @@ export default defineContentConfig({
       type: 'data',
       source: 'seo/**.yml',
       schema: seoSchema,
+    }),
+    piece: defineCollection({
+      type: 'data',
+      source: 'piece/**.yml',
+      schema: pieceSchema,
     }),
   },
 });

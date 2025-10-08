@@ -1,5 +1,5 @@
 import { Types } from 'mongoose';
-import { type PieceLocaleInt, type WorkImgInt, type WorkLocaleInt, WorkModel, type WorkTimelineInt } from './WorkModel';
+import { type PieceLocaleInt, type PieceWithWorkIdInt, type WorkImgInt, type WorkLocaleInt, WorkModel, type WorkTimelineInt } from './WorkModel';
 import type { Locale } from '~/types/locale';
 
 export async function getAllWorkTitles(): Promise<WorkTimelineInt[]> {
@@ -66,6 +66,7 @@ export async function getWorkDetailLocaleFromId(workId: string, locale: Locale =
               material: `$$piece.material.${locale}`,
               imageUrl: '$$piece.imageUrl',
               description: `$$piece.description.${locale}`,
+              tags: '$$piece.tags',
               locale: locale,
             },
           },
@@ -107,6 +108,23 @@ export async function fetchPieceFromWork(workId: string, pieceId: string, locale
         pieces: {
           $elemMatch: {
             _id: new Types.ObjectId(pieceId),
+          },
+        },
+      },
+    }, {
+      $addFields: {
+        'pieces.workTitle': {
+          $cond: {
+            if: { $ne: ['$title', 'N/A'] },
+            then: '$title',
+            else: '$$REMOVE',
+          },
+        },
+        'pieces.workId': {
+          $cond: {
+            if: { $ne: ['$title', 'N/A'] },
+            then: '$_id',
+            else: '$$REMOVE',
           },
         },
       },
@@ -167,6 +185,47 @@ export async function fetchAllShowcaseImages(): Promise<WorkImgInt[]> {
       $project: {
         title: 1,
         imageUrl: 1,
+      },
+    },
+  ]);
+  return result;
+}
+
+export async function fetchAllPieces(): Promise<PieceWithWorkIdInt[]> {
+  const result = await WorkModel.aggregate<PieceWithWorkIdInt>([
+    {
+      $project: {
+        pieces: 1,
+        title: 1,
+      },
+    }, {
+      $unwind: '$pieces',
+    }, {
+      $addFields: {
+        'pieces.workId': {
+          $cond: {
+            if: { $ne: ['$title', 'N/A'] },
+            then: '$_id',
+            else: '$$REMOVE',
+          },
+        },
+        'pieces._id': {
+          $cond: {
+            if: { $eq: ['$title', 'N/A'] },
+            then: '$_id',
+            else: '$pieces._id',
+          },
+        },
+      },
+    }, {
+      $replaceRoot: {
+        newRoot: '$pieces',
+      },
+    }, {
+      $project: {
+        dimension: 0,
+        material: 0,
+        description: 0,
       },
     },
   ]);

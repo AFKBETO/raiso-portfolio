@@ -69,12 +69,23 @@ export interface PieceLocaleInt extends Document {
   imageUrl: string;
   description: string;
   tags: string[];
+  workId?: string;
+  workTitle?: string;
 }
 
 export interface PieceSimplifiedInt extends Document {
   _id: string;
   title: string;
   imageUrl: string;
+}
+
+export interface PieceWithWorkIdInt extends Document {
+  _id: string;
+  title: string;
+  year: number;
+  imageUrl: string;
+  tags: string[];
+  workId?: string;
 }
 
 export interface WorkLocaleInt extends Document {
