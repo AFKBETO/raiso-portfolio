@@ -4,14 +4,6 @@ import type { Locale } from '~/types/locale';
 
 export async function getAllWorkTitles(): Promise<WorkTimelineInt[]> {
   return await WorkModel.aggregate<WorkTimelineInt>([{
-    $fill: {
-      output: {
-        priority: {
-          value: 0,
-        },
-      },
-    },
-  }, {
     $addFields: {
       title: {
         $cond: {
@@ -40,7 +32,6 @@ export async function getAllWorkTitles(): Promise<WorkTimelineInt[]> {
         $push: {
           _id: '$_id',
           title: '$title',
-          priority: '$priority',
         },
       },
     },
@@ -49,16 +40,10 @@ export async function getAllWorkTitles(): Promise<WorkTimelineInt[]> {
     $project: {
       year: '$_id',
       _id: 0,
-      works: {
-        $sortArray: {
-          input: '$works',
-          sortBy: { priority: -1, title: 1 },
-        },
-      },
-      priority: 1,
+      works: 1,
     },
   },
-  ]).sort({ year: -1, priority: -1 });
+  ]).sort({ year: -1 });
 }
 
 export async function getWorkDetailLocaleFromId(workId: string, locale: Locale = 'fr'): Promise<WorkLocaleInt | PieceLocaleInt> {

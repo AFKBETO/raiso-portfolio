@@ -22,7 +22,6 @@ export interface WorkInt extends Document {
   title: string;
   year: number;
   showcase: boolean;
-  priority: number;
   description: {
     [k in Locale]: string;
   };
@@ -60,10 +59,6 @@ export const WorkSchema = new Schema<WorkInt>({
     of: String,
   },
   pieces: [PieceSchema],
-  priority: {
-    type: Number,
-    default: 0,
-  },
 });
 
 export interface WorkTitleInt extends Document {
@@ -73,7 +68,6 @@ export interface WorkTitleInt extends Document {
 
 export interface WorkTimelineInt {
   year: number;
-  priority: number;
   works: WorkTitleInt[];
 }
 
