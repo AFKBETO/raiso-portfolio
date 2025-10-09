@@ -197,22 +197,21 @@ export async function fetchAllShowcaseImages(): Promise<WorkImgInt[]> {
 
 export async function fetchAllPieces(isShow: boolean = false): Promise<PieceWithWorkIdInt[]> {
   const pipeline: PipelineStage[] = [];
+  const piecesFilter = {
+    $filter: {
+      input: '$pieces',
+      as: 'piece',
+      cond: { $eq: ['$$piece.isShow', true] },
+    },
+  };
   pipeline.push({
     $project: {
-      pieces: 1,
+      pieces: isShow ? piecesFilter : 1,
       title: 1,
     },
   }, {
     $unwind: '$pieces',
-  });
-  if (isShow) {
-    pipeline.push({
-      $match: {
-        'pieces.isShow': true,
-      },
-    });
-  }
-  pipeline.push({
+  }, {
     $addFields: {
       'pieces.workId': {
         $cond: {
@@ -231,6 +230,9 @@ export async function fetchAllPieces(isShow: boolean = false): Promise<PieceWith
       'pieces.isShow': {
         $ifNull: ['$pieces.isShow', false],
       },
+      'pieces.priority': {
+        $ifNull: ['$pieces.priority', 0],
+      },
     },
   }, {
     $replaceRoot: {
@@ -243,6 +245,6 @@ export async function fetchAllPieces(isShow: boolean = false): Promise<PieceWith
       description: 0,
     },
   });
-  const result = await WorkModel.aggregate<PieceWithWorkIdInt>(pipeline).sort({ year: -1 });
+  const result = await WorkModel.aggregate<PieceWithWorkIdInt>(pipeline).sort({ year: -1, priority: -1 });
   return result;
 }
