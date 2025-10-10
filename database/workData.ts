@@ -18,14 +18,14 @@ export async function getAllWorkTitles(): Promise<WorkTimelineInt[]> {
         },
       },
     },
-  },
-  {
+  }, {
+    $sort: { year: -1, title: 1 },
+  }, {
     $project: {
       pieces: 0,
       showcase: 0,
     },
-  },
-  {
+  }, {
     $group: {
       _id: '$year',
       works: {
@@ -35,15 +35,13 @@ export async function getAllWorkTitles(): Promise<WorkTimelineInt[]> {
         },
       },
     },
-  },
-  {
+  }, {
     $project: {
       year: '$_id',
       _id: 0,
       works: 1,
     },
-  },
-  ]).sort({ year: -1 });
+  }]).sort({ year: -1 });
 }
 
 export async function getWorkDetailLocaleFromId(workId: string, locale: Locale = 'fr'): Promise<WorkLocaleInt | PieceLocaleInt> {
@@ -245,6 +243,6 @@ export async function fetchAllPieces(isShow: boolean = false): Promise<PieceWith
       description: 0,
     },
   });
-  const result = await WorkModel.aggregate<PieceWithWorkIdInt>(pipeline).sort({ year: -1, priority: -1 });
+  const result = await WorkModel.aggregate<PieceWithWorkIdInt>(pipeline).sort({ priority: -1, year: -1, title: 1 });
   return result;
 }
