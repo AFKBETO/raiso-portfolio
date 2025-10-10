@@ -57,7 +57,7 @@ const paragraphs = computed(() => piece.description.split('\\n'));
       <p
         v-for="(paragraph, index) in paragraphs"
         :key="index"
-        class="text-justify"
+        class="text-justify pt-4"
       >
         {{ paragraph }}
       </p>

@@ -42,6 +42,8 @@ function updateShowArrows() {
   }
 }
 
+const paragraphs = computed(() => data.value?.description.split('\\n'));
+
 onMounted(() => {
   updateShowArrows();
   window.addEventListener('resize', updateShowArrows);
@@ -110,6 +112,15 @@ useHead({
         <p class="text-2xl text-center font-sans mb-6 font-bold">
           {{ data.title.toLocaleUpperCase() }}
         </p>
+        <div
+          v-for="(paragraph, index) in paragraphs"
+          :key="index"
+          class="my-4"
+        >
+          <p class="text-justify">
+            {{ paragraph }}
+          </p>
+        </div>
         <UCarousel
           v-slot="{ item }"
           class="w-[300px] md:w-[600px] lg:w-full"
@@ -136,11 +147,6 @@ useHead({
             {{ item.title }}
           </UButton>
         </UCarousel>
-        <div class="mt-4">
-          <p class="text-sm text-gray-500">
-            {{ data.description }}
-          </p>
-        </div>
       </div>
     </template>
   </div>
