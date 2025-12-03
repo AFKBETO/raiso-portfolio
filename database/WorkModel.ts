@@ -1,7 +1,27 @@
 import { model, Schema, type Document } from 'mongoose';
 import type { Locale } from '~/types/locale';
 
-export interface PieceInt extends Document {
+export interface CategoryInt extends Document {
+  _id: string;
+  name: string;
+  nameLocale: {
+    [k in Locale]: string;
+  };
+  description: {
+    [k in Locale]: string;
+  };
+}
+
+export interface ProductInfoInt {
+  isSoldout: boolean;
+  price: number;
+  minQuantity: number;
+  maxQuantity: number;
+  categories: string[];
+  productTitle: string;
+}
+
+export interface PieceInt {
   _id: string;
   title: string;
   year: number;
@@ -9,24 +29,58 @@ export interface PieceInt extends Document {
   material: {
     [k in Locale]: string;
   };
-  imageUrl: string;
+  imageUrls: string[];
+  primaryImageIndex: number;
   description: {
     [k in Locale]: string;
   };
   tags: string[];
   isShow: boolean;
+  productInfo?: ProductInfoInt;
 }
 
 export interface WorkInt extends Document {
   _id: string;
   title: string;
   year: number;
-  showcase: boolean;
+  showcase?: boolean;
+  isPureProduct: boolean;
   description: {
     [k in Locale]: string;
   };
   pieces: PieceInt[];
 }
+
+export const CategorySchema = new Schema<CategoryInt>({
+  _id: Schema.Types.ObjectId,
+  name: String,
+  nameLocale: {
+    type: Map,
+    of: String,
+  },
+  description: {
+    type: Map,
+    of: String,
+  },
+});
+
+export const ProductInfoSchema = new Schema<ProductInfoInt>({
+  isSoldout: {
+    type: Boolean,
+    default: false,
+  },
+  price: {
+    type: Number,
+    default: 0,
+  },
+  categories: [{
+    type: Schema.Types.ObjectId,
+    ref: 'Category',
+  }],
+  productTitle: String,
+  minQuantity: Number,
+  maxQuantity: Number,
+}, { _id: false });
 
 export const PieceSchema = new Schema<PieceInt>({
   _id: Schema.Types.ObjectId,
@@ -37,7 +91,14 @@ export const PieceSchema = new Schema<PieceInt>({
     type: Map,
     of: String,
   },
-  imageUrl: String,
+  imageUrls: {
+    type: [String],
+    required: false,
+  },
+  primaryImageIndex: {
+    type: Number,
+    default: 0,
+  },
   description: {
     type: Map,
     of: String,
@@ -47,6 +108,7 @@ export const PieceSchema = new Schema<PieceInt>({
     type: Boolean,
     default: false,
   },
+  productInfo: ProductInfoSchema,
 });
 
 export const WorkSchema = new Schema<WorkInt>({
@@ -54,6 +116,7 @@ export const WorkSchema = new Schema<WorkInt>({
   title: String,
   year: Number,
   showcase: Boolean,
+  isPureProduct: Boolean,
   description: {
     type: Map,
     of: String,
@@ -78,10 +141,12 @@ export interface PieceLocaleInt extends Document {
   year: number;
   dimension: string;
   material: string;
-  imageUrl: string;
+  imageUrls: string[];
+  primaryImageIndex: number;
   description: string;
   tags: string[];
   isShow: boolean;
+  productInfo?: ProductInfoInt;
   workId?: string;
   workTitle?: string;
 }
@@ -116,4 +181,14 @@ export interface WorkImgInt extends Document {
   imageUrl: string;
 }
 
+export interface ProductCardInt extends Document {
+  _id: string;
+  title: string;
+  productTitle?: string;
+  price: number;
+  imageUrl: string;
+  workId?: string;
+}
+
+export const CategoryModel = model('Category', CategorySchema, 'categories');
 export const WorkModel = model('Work', WorkSchema, 'works');

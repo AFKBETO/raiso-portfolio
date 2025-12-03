@@ -46,7 +46,7 @@ const localeItems = ref<DropdownMenuItem[]>([
 
 const isSlideoverOpen = useSlideoverOpen();
 
-const verticalItems = ref<NavigationMenuItem[][]>([[
+const verticalItems = computed<NavigationMenuItem[][]>(() => [[
   {
     label: headerLabels.value?.home,
     to: '/',
@@ -54,6 +54,10 @@ const verticalItems = ref<NavigationMenuItem[][]>([[
   {
     label: headerLabels.value?.about,
     to: '/about',
+  },
+  {
+    label: headerLabels.value?.shop,
+    to: '/shop',
   },
   {
     label: 'Email',
@@ -119,6 +123,14 @@ const verticalItems = ref<NavigationMenuItem[][]>([[
         to="/about"
       >
         {{ headerLabels?.about }}
+      </ULink>
+      <ULink
+        class="content-center text-black"
+        active-class="underline underline-offset-2"
+        as="button"
+        to="/shop"
+      >
+        {{ headerLabels?.shop }}
       </ULink>
       <ULink
         href="mailto:buithuhuong0804@gmail.com"

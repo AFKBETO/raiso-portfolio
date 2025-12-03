@@ -1,9 +1,13 @@
 import { Types, type PipelineStage } from 'mongoose';
-import { type PieceLocaleInt, type PieceWithWorkIdInt, type WorkImgInt, type WorkLocaleInt, WorkModel, type WorkTimelineInt } from './WorkModel';
+import { CategoryModel, type PieceLocaleInt, type PieceWithWorkIdInt, type ProductCardInt, type WorkImgInt, type WorkLocaleInt, WorkModel, type WorkTimelineInt } from './WorkModel';
 import type { Locale } from '~/types/locale';
 
 export async function getAllWorkTitles(): Promise<WorkTimelineInt[]> {
   return await WorkModel.aggregate<WorkTimelineInt>([{
+    $match: {
+      isPureProduct: false,
+    },
+  }, {
     $addFields: {
       title: {
         $cond: {
@@ -66,10 +70,14 @@ export async function getWorkDetailLocaleFromId(workId: string, locale: Locale =
               year: '$$piece.year',
               dimension: '$$piece.dimension',
               material: { $ifNull: [`$$piece.material.${locale}`, ''] },
-              imageUrl: '$$piece.imageUrl',
+              imageUrls: '$$piece.imageUrls',
+              primaryImageIndex: '$$piece.primaryImageIndex',
+              imageUrl: { $arrayElemAt: ['$$piece.imageUrls', '$$piece.primaryImageIndex'] },
               description: { $ifNull: [`$$piece.description.${locale}`, ''] },
               tags: '$$piece.tags',
               locale: locale,
+              isShow: '$$piece.isShow',
+              productInfo: { $ifNull: ['$$piece.productInfo', '$$REMOVE'] },
             },
           },
         },
@@ -175,9 +183,9 @@ export async function fetchAllShowcaseImages(): Promise<WorkImgInt[]> {
             else: '$title',
           },
         },
-        imageUrl: {
+        imageUrls: {
           $getField: {
-            field: 'imageUrl',
+            field: 'imageUrls',
             input: { $arrayElemAt: ['$pieces', 0] },
           },
         },
@@ -186,7 +194,7 @@ export async function fetchAllShowcaseImages(): Promise<WorkImgInt[]> {
     {
       $project: {
         title: 1,
-        imageUrl: 1,
+        imageUrl: { $arrayElemAt: ['$imageUrls', 0] },
       },
     },
   ]);
@@ -231,6 +239,9 @@ export async function fetchAllPieces(isShow: boolean = false): Promise<PieceWith
       'pieces.priority': {
         $ifNull: ['$pieces.priority', 0],
       },
+      'pieces.imageUrl': {
+        $arrayElemAt: ['$pieces.imageUrls', '$pieces.primaryImageIndex'],
+      },
     },
   }, {
     $replaceRoot: {
@@ -245,4 +256,96 @@ export async function fetchAllPieces(isShow: boolean = false): Promise<PieceWith
   });
   const result = await WorkModel.aggregate<PieceWithWorkIdInt>(pipeline).sort({ priority: -1, year: -1, title: 1 });
   return result;
+}
+
+export async function fetchProductCardsByName({
+  pageSize = 10,
+  pageNumber = 1,
+  searchTerm = '',
+  category = '',
+}: {
+  pageSize?: number;
+  pageNumber?: number;
+  searchTerm?: string;
+  category?: string;
+}): Promise<ProductCardInt[]> {
+  const pipeline: PipelineStage[] = [{
+    $project: {
+      title: 1,
+      pieces: {
+        $filter: {
+          input: '$pieces',
+          as: 'piece',
+          cond: { $gte: ['$$piece.productInfo', null] },
+        },
+      },
+    },
+  },
+  { $unwind: '$pieces' },
+  {
+    $addFields: {
+      'pieces.workId': {
+        $cond: {
+          if: { $ne: ['$title', 'N/A'] },
+          then: '$_id',
+          else: '$$REMOVE',
+        },
+      },
+      'pieces._id': {
+        $cond: {
+          if: { $eq: ['$title', 'N/A'] },
+          then: '$_id',
+          else: '$pieces._id',
+        },
+      },
+      'pieces.imageUrl': {
+        $arrayElemAt: ['$pieces.imageUrls', '$pieces.primaryImageIndex'],
+      },
+      'pieces.productTitle': {
+        $ifNull: ['$pieces.productInfo.productTitle', '$$REMOVE'],
+      },
+      'pieces.price': '$pieces.productInfo.price',
+      'pieces.categories': '$pieces.productInfo.categories',
+    },
+  },
+  {
+    $replaceRoot: {
+      newRoot: '$pieces',
+    },
+  }, {
+    $project: {
+      _id: 1,
+      title: 1,
+      productTitle: 1,
+      price: 1,
+      imageUrl: 1,
+      workId: 1,
+      categories: 1,
+    },
+  }];
+
+  if (searchTerm.length > 0) {
+    const regex = new RegExp(searchTerm, 'i'); // Case-insensitive regex
+    pipeline.push({
+      $match: {
+        title: { $regex: regex },
+      },
+    });
+  }
+
+  if (category.length > 0) {
+    const categoryIds = await CategoryModel.find({ name: category }).select('_id').lean();
+    pipeline.push({
+      $match: {
+        categories: categoryIds[0]?._id,
+      },
+    });
+  }
+
+  pipeline.push(
+    { $skip: pageSize * (pageNumber - 1) },
+    { $limit: pageSize });
+
+  const products: ProductCardInt[] = await WorkModel.aggregate<ProductCardInt>(pipeline);
+  return products;
 }

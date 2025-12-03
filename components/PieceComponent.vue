@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import MediaComponent from './MediaComponent.vue';
 import type { PieceLocaleInt } from '~/database/WorkModel';
 
 const { piece } = defineProps<{
@@ -21,19 +22,41 @@ const { data: pieceLabels } = await useAsyncData('/pieceLabels', async () => {
   watch: [locale],
 });
 
+function getTitle(): string {
+  if (!!piece.productInfo && piece.productInfo.productTitle !== '') {
+    return `${piece.title} | ${piece.productInfo.productTitle}`;
+  }
+  return piece.title;
+}
+
 const paragraphs = computed(() => piece.description.split('\\n'));
 </script>
 
 <template>
   <div class="w-full m-auto py-8 px-10 grid grid-cols-1 md:grid-cols-2 gap-6 items-center">
-    <img
-      :src="parseImageSrc(piece.imageUrl, 1000)"
-      :alt="piece.title"
-      class="aspect-square object-scale-down w-full"
-    >
+    <div class="flex flex-col items-center gap-2">
+      <MediaComponent
+        width="100%"
+        :media-width="1000"
+        class="aspect-square object-scale-down"
+        :alt="piece.title"
+        :src="piece.imageUrls[piece.primaryImageIndex]"
+      />
+      <template v-for="i in piece.imageUrls.keys()">
+        <MediaComponent
+          v-if="i !== piece.primaryImageIndex"
+          :key="i"
+          width="100%"
+          :media-width="1000"
+          class="aspect-square object-scale-down"
+          :alt="piece.title + ' - ' + (i + 1)"
+          :src="piece.imageUrls[piece.primaryImageIndex]"
+        />
+      </template>
+    </div>
     <div>
       <p class="text-xl">
-        {{ piece.title }}
+        {{ getTitle() }}
       </p>
       <p
         v-if="piece.workId"
@@ -57,10 +80,15 @@ const paragraphs = computed(() => piece.description.split('\\n'));
       <p
         v-for="(paragraph, index) in paragraphs"
         :key="index"
-        class="text-justify pt-4"
+        class="text-justify py-4"
       >
         {{ paragraph }}
       </p>
+      <div v-if="!!piece.productInfo">
+        <p>
+          {{ parsePrice(piece.productInfo.price) }} €
+        </p>
+      </div>
     </div>
   </div>
 </template>

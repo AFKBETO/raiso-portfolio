@@ -12,6 +12,7 @@ const headerSchema = z.object({
   home: z.string(),
   about: z.string(),
   activities: z.string(),
+  shop: z.string(),
 });
 
 const footerSchema = z.object({
