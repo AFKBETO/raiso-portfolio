@@ -13,6 +13,16 @@ const headerSchema = z.object({
   about: z.string(),
   activities: z.string(),
   shop: z.string(),
+  cart: z.string(),
+  emptyCart: z.string(),
+  quantity: z.string(),
+  unitPrice: z.string(),
+  sum: z.string(),
+  total: z.string(),
+  withoutVat: z.string(),
+  withVat: z.string(),
+  close: z.string(),
+  payment: z.string(),
 });
 
 const footerSchema = z.object({
@@ -32,6 +42,7 @@ const pieceSchema = z.object({
   materials: z.string(),
   dimension: z.string(),
   tags: z.string(),
+  addToCart: z.string(),
 });
 
 export default defineContentConfig({

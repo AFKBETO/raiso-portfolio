@@ -10,7 +10,6 @@ export default function isYouTubeURL(url: string): boolean {
     );
   }
   catch {
-    console.log('error');
     return false;
   }
 }

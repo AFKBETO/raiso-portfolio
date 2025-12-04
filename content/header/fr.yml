@@ -2,3 +2,13 @@ language: fr
 home: Accueil
 about: À propos
 shop: Boutique
+cart: Votre Panier
+emptyCart: Votre panier est vide, pourquoi ne pas jeter un œil à notre boutique ?
+quantity: Quantité
+unitPrice: Prix Unité
+sum: Somme
+total: Totale
+withoutVat: HT
+withVat: TTC
+close: Fermer
+payment: Continuer au Paiement

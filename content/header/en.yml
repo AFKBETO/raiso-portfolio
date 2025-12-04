@@ -2,3 +2,13 @@ language: en
 home: Home
 about: About
 shop: Shop
+cart: Your cart
+emptyCart: Your cart is empty, maybe check out our shop?
+quantity: Quantity
+unitPrice: Unit Price
+sum: Sum
+total: Total
+withoutVat: Without VAT
+withVat: With VAT
+close: Close
+payment: Proceed to Payment

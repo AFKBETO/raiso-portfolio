@@ -9,7 +9,6 @@ interface MediaComponentProps extends /* @vue-ignore */ ImgHTMLAttributes {
 const props = defineProps<MediaComponentProps>();
 
 const isYouTubeMedia = isYouTubeURL(props.src as string);
-console.log(isYouTubeMedia);
 </script>
 
 <template>
