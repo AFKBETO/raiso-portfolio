@@ -5,17 +5,18 @@ import type { Page } from '~/types/page';
 export default defineEventHandler(async (event): Promise<Page<ProductCardInt>> => {
   try {
     const query = getQuery(event);
-    console.log(query);
     const productName = String(query.name || ''),
       pageSize = Number(query.pageSize || 10),
       pageNumber = Number(query.pageNumber || 1),
-      category = String(query.category || '');
+      category = String(query.category || ''),
+      unavailableIncluded = String(query.unavailableIncluded) === 'true';
 
     const products = await fetchProductCards({
       pageSize,
       pageNumber,
       searchTerm: productName,
       category,
+      unavailableIncluded,
     });
     return products;
   }

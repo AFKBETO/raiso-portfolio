@@ -50,6 +50,12 @@ function onClick() {
   }
   cart.value = { ...cartItems };
 }
+function strikethrough(baseClass: string): string {
+  if (piece.productInfo && piece.productInfo.isSoldout) {
+    return `${baseClass} line-through`;
+  }
+  return baseClass;
+}
 </script>
 
 <template>
@@ -109,7 +115,7 @@ function onClick() {
         class="flex justify-start content-center gap-2 my-2"
       >
         <div
-          class="content-center"
+          :class="strikethrough('content-center')"
         >
           {{ parsePrice(piece.productInfo.price) }} €
         </div>
@@ -117,9 +123,14 @@ function onClick() {
           v-model="quantity"
           :min="piece.productInfo.minQuantity ?? 0"
           :max="piece.productInfo.maxQuantity > 0 ? piece.productInfo.maxQuantity : undefined"
+          :disabled="piece.productInfo.isSoldout"
+          :color="piece.productInfo.isSoldout ? 'neutral' : 'primary'"
         />
         <UButton
           loading-auto
+          :disabled="piece.productInfo.isSoldout"
+          :variant="piece.productInfo.isSoldout ? 'outline' : 'solid'"
+          :color="piece.productInfo.isSoldout ? 'neutral' : 'primary'"
           @click="() => onClick()"
         >
           {{ pieceLabels?.addToCart }}

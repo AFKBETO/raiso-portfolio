@@ -184,6 +184,7 @@ export interface ProductCardInt {
   productTitle?: string;
   price: number;
   imageUrl: string;
+  isSoldout: boolean;
   workId?: string;
 }
 

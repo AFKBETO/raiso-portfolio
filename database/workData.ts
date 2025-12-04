@@ -1,4 +1,4 @@
-import { Types, type PipelineStage } from 'mongoose';
+import { Types, type PipelineStage, type QuerySelector, type RootQuerySelector } from 'mongoose';
 import { CategoryModel, type PieceLocaleInt, type PieceWithWorkIdInt, type ProductCardInt, type WorkImgInt, type WorkLocaleInt, WorkModel, type WorkTimelineInt } from './WorkModel';
 import type { Locale } from '~/types/locale';
 import type { Page } from '~/types/page';
@@ -259,12 +259,22 @@ export async function fetchProductCards({
   pageNumber = 1,
   searchTerm = '',
   category = '',
+  unavailableIncluded = false,
 }: {
   pageSize?: number;
   pageNumber?: number;
   searchTerm?: string;
   category?: string;
+  unavailableIncluded?: boolean;
 }): Promise<Page<ProductCardInt>> {
+  const conditions: RootQuerySelector<QuerySelector<string>> = {
+    $and: [
+      { $gte: ['$$piece.productInfo', null] },
+    ],
+  };
+  if (!unavailableIncluded) {
+    conditions.$and?.push({ $eq: ['$$piece.productInfo.isSoldout', false] });
+  }
   const pipeline: PipelineStage[] = [{
     $project: {
       title: 1,
@@ -272,7 +282,7 @@ export async function fetchProductCards({
         $filter: {
           input: '$pieces',
           as: 'piece',
-          cond: { $gte: ['$$piece.productInfo', null] },
+          cond: conditions,
         },
       },
     },
@@ -289,6 +299,7 @@ export async function fetchProductCards({
       },
       'pieces.price': '$pieces.productInfo.price',
       'pieces.categories': '$pieces.productInfo.categories',
+      'pieces.isSoldout': '$pieces.productInfo.isSoldout',
     },
   },
   {
@@ -304,6 +315,7 @@ export async function fetchProductCards({
       imageUrl: 1,
       workId: 1,
       categories: 1,
+      isSoldout: 1,
     },
   }];
 
@@ -347,7 +359,6 @@ export async function fetchProductCards({
       },
     },
   });
-
   const results: Page<ProductCardInt>[] = await WorkModel.aggregate<Page<ProductCardInt>>(pipeline);
   return results[0];
 }

@@ -10,6 +10,7 @@ const { data: productQuery } = await useFetch<Page<ProductCardInt>>(`/api/produc
   query: {
     pageSize: pageSize,
     pageNumber: pageNumber,
+    unavailableIncluded: false,
   },
   key: 'product-query',
 });
