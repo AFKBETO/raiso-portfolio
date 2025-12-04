@@ -104,98 +104,101 @@ const verticalItems = computed<NavigationMenuItem[][]>(() => [[
         class="h-20 w-80 rounded-full"
       >
     </ULink>
-    <nav
-      v-if="isLargeScreen"
-      class="flex flex-row content-center gap-4 my-auto align-center"
-    >
-      <ULink
-        class="content-center text-black "
-        active-class="underline underline-offset-2"
-        as="button"
-        to="/"
-      >
-        {{ headerLabels?.home }}
-      </ULink>
-      <ULink
-        class="content-center text-black"
-        active-class="underline underline-offset-2"
-        as="button"
-        to="/about"
-      >
-        {{ headerLabels?.about }}
-      </ULink>
-      <ULink
-        class="content-center text-black"
-        active-class="underline underline-offset-2"
-        as="button"
-        to="/shop"
-      >
-        {{ headerLabels?.shop }}
-      </ULink>
-      <ULink
-        href="mailto:buithuhuong0804@gmail.com"
-        class="align-center"
-      >
-        <UIcon
-          name="i-lucide-mail"
-          class="!size-8"
-        />
-      </ULink>
-      <ULink
-        href="https://www.instagram.com/raisohoho/"
-        target="_blank"
-        external
-        class="align-center"
-      >
-        <UIcon
-          name="i-lucide-instagram"
-          class="!size-8"
-        />
-      </ULink>
-      <UDropdownMenu
-        :items="localeItems"
-        :content="{
-          align: 'end',
-        }"
+    <div class="flex flex-row gap-2 align-center content-center">
+      <nav
+        v-if="isLargeScreen"
+        class="flex flex-row content-center gap-4 my-auto align-center"
       >
         <ULink
+          class="content-center text-black "
+          active-class="underline underline-offset-2"
+          as="button"
+          to="/"
+        >
+          {{ headerLabels?.home }}
+        </ULink>
+        <ULink
+          class="content-center text-black"
+          active-class="underline underline-offset-2"
+          as="button"
+          to="/about"
+        >
+          {{ headerLabels?.about }}
+        </ULink>
+        <ULink
+          class="content-center text-black"
+          active-class="underline underline-offset-2"
+          as="button"
+          to="/shop"
+        >
+          {{ headerLabels?.shop }}
+        </ULink>
+        <ULink
+          href="mailto:buithuhuong0804@gmail.com"
           class="align-center"
         >
           <UIcon
-            :name="flagCircleIcon"
-            class="!size-7"
+            name="i-lucide-mail"
+            class="!size-8"
           />
         </ULink>
-      </UDropdownMenu>
-    </nav>
-    <template v-else>
-      <div class="content-center">
-        <USlideover
-          v-model:open="isSlideoverOpen"
-          keepalive
+        <ULink
+          href="https://www.instagram.com/raisohoho/"
+          target="_blank"
+          external
+          class="align-center"
         >
-          <UButton
-            size="xl"
-            icon="i-lucide-menu"
-            color="neutral"
-            variant="ghost"
+          <UIcon
+            name="i-lucide-instagram"
+            class="!size-8"
           />
-          <template #body>
-            <UNavigationMenu
-              keepalive
-              orientation="vertical"
-              :items="verticalItems"
-              class="data-[orientation=vertical]:w-48"
-            >
-              <template #flag>
-                <UIcon
-                  :name="flagSquareIcon"
-                />
-              </template>
-            </UNavigationMenu>
-          </template>
-        </USlideover>
-      </div>
-    </template>
+        </ULink>
+        <UDropdownMenu
+          :items="localeItems"
+          :content="{
+            align: 'end',
+          }"
+        >
+          <ULink
+            class="align-center"
+          >
+            <UIcon
+              :name="flagCircleIcon"
+              class="!size-7"
+            />
+          </ULink>
+        </UDropdownMenu>
+      </nav>
+      <template v-else>
+        <div class="content-center">
+          <USlideover
+            v-model:open="isSlideoverOpen"
+            keepalive
+          >
+            <UButton
+              size="xl"
+              icon="i-lucide-menu"
+              color="neutral"
+              variant="ghost"
+            />
+            <template #body>
+              <UNavigationMenu
+                keepalive
+                orientation="vertical"
+                :items="verticalItems"
+                class="data-[orientation=vertical]:w-48"
+              >
+                <template #flag>
+                  <UIcon
+                    :name="flagSquareIcon"
+                  />
+                </template>
+              </UNavigationMenu>
+            </template>
+          </USlideover>
+        </div>
+      </template>
+      <CartComponent :header-labels="headerLabels" />
+    </div>
   </header>
 </template>

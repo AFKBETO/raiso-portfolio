@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import MediaComponent from './MediaComponent.vue';
 import type { PieceLocaleInt } from '~/database/WorkModel';
 
 const { piece } = defineProps<{
@@ -7,6 +6,7 @@ const { piece } = defineProps<{
 }>();
 
 const locale = useNuxtLocale();
+const cart = useCart();
 
 const { data: pieceLabels } = await useAsyncData('/pieceLabels', async () => {
   const pieceLabels = await queryCollection('piece')
@@ -30,6 +30,26 @@ function getTitle(): string {
 }
 
 const paragraphs = computed(() => piece.description.split('\\n'));
+const quantity = ref(piece.productInfo?.minQuantity || 0);
+
+function onClick() {
+  if (!quantity.value) {
+    return;
+  }
+  const cartItems = { ...cart.value };
+  const item = cartItems[piece.workId + '-' + piece._id];
+  if (item) {
+    item.quantity += quantity.value;
+  }
+  else {
+    cartItems[piece.workId + '-' + piece._id] = {
+      workId: piece.workId,
+      pieceId: piece._id,
+      quantity: quantity.value,
+    };
+  }
+  cart.value = { ...cartItems };
+}
 </script>
 
 <template>
@@ -59,7 +79,7 @@ const paragraphs = computed(() => piece.description.split('\\n'));
         {{ getTitle() }}
       </p>
       <p
-        v-if="piece.workId"
+        v-if="piece.workId && piece.workTitle"
       >
         {{ pieceLabels?.work }}: <ULink :to="`/works/${piece.workId}`">{{ piece.workTitle }}</ULink>
       </p>
@@ -84,10 +104,26 @@ const paragraphs = computed(() => piece.description.split('\\n'));
       >
         {{ paragraph }}
       </p>
-      <div v-if="!!piece.productInfo">
-        <p>
+      <div
+        v-if="!!piece.productInfo"
+        class="flex justify-start content-center gap-2 my-2"
+      >
+        <div
+          class="content-center"
+        >
           {{ parsePrice(piece.productInfo.price) }} €
-        </p>
+        </div>
+        <UInputNumber
+          v-model="quantity"
+          :min="piece.productInfo.minQuantity ?? 0"
+          :max="piece.productInfo.maxQuantity > 0 ? piece.productInfo.maxQuantity : undefined"
+        />
+        <UButton
+          loading-auto
+          @click="() => onClick()"
+        >
+          {{ pieceLabels?.addToCart }}
+        </UButton>
       </div>
     </div>
   </div>
