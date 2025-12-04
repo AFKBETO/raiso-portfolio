@@ -1,6 +1,7 @@
 import { Types, type PipelineStage } from 'mongoose';
 import { CategoryModel, type PieceLocaleInt, type PieceWithWorkIdInt, type ProductCardInt, type WorkImgInt, type WorkLocaleInt, WorkModel, type WorkTimelineInt } from './WorkModel';
 import type { Locale } from '~/types/locale';
+import type { Page } from '~/types/page';
 
 export async function getAllWorkTitles(): Promise<WorkTimelineInt[]> {
   return await WorkModel.aggregate<WorkTimelineInt>([{
@@ -78,6 +79,7 @@ export async function getWorkDetailLocaleFromId(workId: string, locale: Locale =
               locale: locale,
               isShow: '$$piece.isShow',
               productInfo: { $ifNull: ['$$piece.productInfo', '$$REMOVE'] },
+              workId: '$_id',
             },
           },
         },
@@ -130,13 +132,7 @@ export async function fetchPieceFromWork(workId: string, pieceId: string, locale
             else: '$$REMOVE',
           },
         },
-        'pieces.workId': {
-          $cond: {
-            if: { $ne: ['$title', 'N/A'] },
-            then: '$_id',
-            else: '$$REMOVE',
-          },
-        },
+        'pieces.workId': '$_id',
       },
     }, {
       $replaceWith: {
@@ -258,7 +254,7 @@ export async function fetchAllPieces(isShow: boolean = false): Promise<PieceWith
   return result;
 }
 
-export async function fetchProductCardsByName({
+export async function fetchProductCards({
   pageSize = 10,
   pageNumber = 1,
   searchTerm = '',
@@ -268,7 +264,7 @@ export async function fetchProductCardsByName({
   pageNumber?: number;
   searchTerm?: string;
   category?: string;
-}): Promise<ProductCardInt[]> {
+}): Promise<Page<ProductCardInt>> {
   const pipeline: PipelineStage[] = [{
     $project: {
       title: 1,
@@ -284,20 +280,7 @@ export async function fetchProductCardsByName({
   { $unwind: '$pieces' },
   {
     $addFields: {
-      'pieces.workId': {
-        $cond: {
-          if: { $ne: ['$title', 'N/A'] },
-          then: '$_id',
-          else: '$$REMOVE',
-        },
-      },
-      'pieces._id': {
-        $cond: {
-          if: { $eq: ['$title', 'N/A'] },
-          then: '$_id',
-          else: '$pieces._id',
-        },
-      },
+      'pieces.workId': '$_id',
       'pieces.imageUrl': {
         $arrayElemAt: ['$pieces.imageUrls', '$pieces.primaryImageIndex'],
       },
@@ -342,10 +325,29 @@ export async function fetchProductCardsByName({
     });
   }
 
-  pipeline.push(
-    { $skip: pageSize * (pageNumber - 1) },
-    { $limit: pageSize });
+  pipeline.push({
+    $facet: {
+      totalCount: [{ $count: 'count' }],
+      results: [
+        { $skip: pageSize * (pageNumber - 1) },
+        { $limit: pageSize },
+      ],
+    },
+  }, {
+    $project: {
+      count: {
+        $arrayElemAt: ['$totalCount.count', 0],
+      },
+      results: 1,
+      pageNumber: {
+        $literal: pageNumber,
+      },
+      pageSize: {
+        $literal: pageSize,
+      },
+    },
+  });
 
-  const products: ProductCardInt[] = await WorkModel.aggregate<ProductCardInt>(pipeline);
-  return products;
+  const results: Page<ProductCardInt>[] = await WorkModel.aggregate<Page<ProductCardInt>>(pipeline);
+  return results[0];
 }

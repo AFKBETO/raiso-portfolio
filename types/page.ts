@@ -1,6 +1,6 @@
 export type Page<T> = {
   count: number;
-  page: number;
+  pageNumber: number;
   pageSize: number;
   results: T[];
 };

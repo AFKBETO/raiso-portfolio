@@ -73,10 +73,7 @@ export const ProductInfoSchema = new Schema<ProductInfoInt>({
     type: Number,
     default: 0,
   },
-  categories: [{
-    type: Schema.Types.ObjectId,
-    ref: 'Category',
-  }],
+  categories: [String],
   productTitle: String,
   minQuantity: Number,
   maxQuantity: Number,
@@ -147,7 +144,7 @@ export interface PieceLocaleInt extends Document {
   tags: string[];
   isShow: boolean;
   productInfo?: ProductInfoInt;
-  workId?: string;
+  workId: string;
   workTitle?: string;
 }
 
@@ -181,7 +178,7 @@ export interface WorkImgInt extends Document {
   imageUrl: string;
 }
 
-export interface ProductCardInt extends Document {
+export interface ProductCardInt {
   _id: string;
   title: string;
   productTitle?: string;
@@ -190,5 +187,5 @@ export interface ProductCardInt extends Document {
   workId?: string;
 }
 
-export const CategoryModel = model('Category', CategorySchema, 'categories');
-export const WorkModel = model('Work', WorkSchema, 'works');
+export const CategoryModel = model<CategoryInt>('Category', CategorySchema, 'categories');
+export const WorkModel = model<WorkInt>('Work', WorkSchema, 'works');
