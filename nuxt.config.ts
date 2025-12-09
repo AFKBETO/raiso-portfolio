@@ -40,6 +40,9 @@ export default defineNuxtConfig({
   },
   runtimeConfig: {
     mongoUri: '',
+    googleEmail: '',
+    googleAppPass: '',
+    googleAlias: '',
     public: {
       cdnUrl: '',
     },

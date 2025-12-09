@@ -22,12 +22,15 @@
 		"@tailwindcss/vite": "^4.1.8",
 		"@unhead/vue": "^2.0.10",
 		"eslint": "^9.27.0",
+		"jsonwebtoken": "^9.0.3",
 		"mongoose": "^8.15.1",
+		"nodemailer": "^7.0.11",
 		"nuxt": "^3.17.4",
 		"tailwindcss": "^4.1.8",
 		"typescript": "^5.8.3",
 		"vue": "^3.5.15",
-		"vue-router": "^4.5.1"
+		"vue-router": "^4.5.1",
+		"zod": "^3.24.0"
 	},
 	"packageManager": "pnpm@10.24.0",
 	"devDependencies": {
@@ -35,6 +38,8 @@
 		"@iconify-json/flag": "^1.2.6",
 		"@iconify-json/lucide": "^1.2.45",
 		"@tailwindcss/typography": "git+https://github.com/tailwindcss/typography.git",
+		"@types/jsonwebtoken": "^9.0.10",
+		"@types/nodemailer": "^7.0.4",
 		"husky": "^9.1.7",
 		"lint-staged": "^16.1.2",
 		"pre-commit": "^1.2.2"
