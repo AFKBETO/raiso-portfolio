@@ -43,8 +43,10 @@ export default defineNuxtConfig({
     googleEmail: '',
     googleAppPass: '',
     googleAlias: '',
+    privateKeyPath: '',
     public: {
       cdnUrl: '',
+      maxSessionAge: 1800,
     },
   }, compatibilityDate: '2025-05-15',
   vite: {

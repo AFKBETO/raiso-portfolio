@@ -154,6 +154,7 @@ function onClick(productId: string) {
       />
       <UButton
         color="neutral"
+        to="/cart"
         @click="() => { open = false }"
       >
         <div class="flex gap-2">

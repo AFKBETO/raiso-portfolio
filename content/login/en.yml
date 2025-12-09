@@ -1,0 +1,9 @@
+﻿language: en
+login: Login
+emailHelp: We won't share your email.
+emailPlaceholder: Type your email address...
+submit: Submit
+code: Authentication Code
+codeDescription: A secret code has been sent to <email-address>. It is available for <code-duration> minutes. Please check your Spam folder.
+codeCooldown: Can't find the email? A new code can be resent in
+second: second

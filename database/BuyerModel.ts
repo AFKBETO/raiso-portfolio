@@ -41,7 +41,6 @@ export interface BuyerInt extends Document {
   phoneNumber: string;
   orders: OrderInt[];
   secretCode?: string;
-  lastSessionAt?: number;
 }
 
 type THydratedBuyerDocument = Document & {
@@ -55,40 +54,35 @@ type THydratedBuyerDocument = Document & {
   phoneNumber: string;
   orders: Types.DocumentArray<OrderInt>;
   secretCode?: string;
-  lastSessionAt?: number;
 };
 
 // eslint-disable-next-line @typescript-eslint/no-empty-object-type
 export type BuyerModelType = Model<BuyerInt, {}, {}, {}, THydratedBuyerDocument>;
 
-export const CartItemSchema = new Schema<CartItemInt, CartItemModelType>({
-  workId: Schema.Types.ObjectId,
-  pieceId: Schema.Types.ObjectId,
+const CartItemSchema = new Schema<CartItemInt, CartItemModelType>({
+  workId: { type: Schema.Types.ObjectId, index: true },
+  pieceId: { type: Schema.Types.ObjectId, index: true },
   sellPrice: Number,
   quantity: Number,
 }, {
   _id: false,
 });
-
-CartItemSchema.index({ productId: 1 });
 export const OrderSchema = new Schema<OrderInt, OrderModelType>({
   timestamp: { type: Number, default: Date.now() },
   cart: [CartItemSchema],
 });
 
-export const BuyerSchema = new Schema<BuyerInt, BuyerModelType>({
-  email: { type: String, required: true, unique: true },
-  address1: String,
+const BuyerSchema = new Schema<BuyerInt, BuyerModelType>({
+  email: { type: String, required: true, unique: true, index: true },
+  address1: { type: String, default: '' },
   address2: { type: String, required: false },
-  city: String,
-  postalCode: String,
-  country: String,
-  phoneNumber: String,
+  city: { type: String, default: '' },
+  postalCode: { type: String, default: '' },
+  country: { type: String, default: '' },
+  phoneNumber: { type: String, default: '' },
   orders: [OrderSchema],
-  secretCode: String,
-  lastSessionAt: Number,
+  secretCode: { type: String, default: '' },
 });
-
 export const BuyerModel = model<BuyerInt, BuyerModelType>('Buyer', BuyerSchema, 'buyers');
 
 export interface ClientCartItemInt {

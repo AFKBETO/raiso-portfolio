@@ -4,6 +4,7 @@ export const useCart = () => {
   const cart = useCookie('cart', {
     default: () => ({
     } as ClientOrderInt),
+    sameSite: true,
   });
   return cart;
 };

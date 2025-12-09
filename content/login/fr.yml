@@ -1,0 +1,9 @@
+﻿language: fr
+login: Connectez-vous
+emailHelp: Nous ne partagerons pas votre adresse e-mail.
+emailPlaceholder: Tapez votre adresse mail...
+submit: Valider
+code: Code d'authentification
+codeDescription: Un code secret a été envoyé à <email-address>. Il est valable pendant <code-duration> minutes. Veuillez vérifier votre dossier Spam.
+codeCooldown: Vous ne trouvez pas l'e-mail ? Un nouveau code peut être renvoyé dans
+second: seconde(s)

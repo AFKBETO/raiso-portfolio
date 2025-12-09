@@ -45,6 +45,18 @@ const pieceSchema = z.object({
   addToCart: z.string(),
 });
 
+const loginSchema = z.object({
+  language: z.string(),
+  login: z.string(),
+  emailPlaceholder: z.string(),
+  submit: z.string(),
+  emailHelp: z.string(),
+  code: z.string(),
+  codeDescription: z.string(),
+  codeCooldown: z.string(),
+  second: z.string(),
+});
+
 export default defineContentConfig({
   collections: {
     content: defineCollection({
@@ -71,6 +83,11 @@ export default defineContentConfig({
       type: 'data',
       source: 'piece/**.yml',
       schema: pieceSchema,
+    }),
+    login: defineCollection({
+      type: 'data',
+      source: 'login/**.yml',
+      schema: loginSchema,
     }),
   },
 });
