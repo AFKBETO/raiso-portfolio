@@ -153,6 +153,7 @@ function onClick(productId: string) {
         @click="() => { open = false }"
       />
       <UButton
+        v-if="cartLength > 0"
         color="neutral"
         to="/cart"
         @click="() => { open = false }"
