@@ -1,6 +1,5 @@
 export default function parseImageSrc(src: string, width?: number): string {
   try {
-    const url = new URL(src);
     if (isYouTubeURL(src)) {
       const id = fetchYouTubeId(src);
       if (id) {
@@ -8,6 +7,7 @@ export default function parseImageSrc(src: string, width?: number): string {
       }
       return src;
     }
+    const url = new URL(src);
     const resize = width ? `?width=${width}` : '';
     return `${url}${resize}`;
   }
