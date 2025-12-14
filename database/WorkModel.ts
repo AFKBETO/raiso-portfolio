@@ -1,7 +1,7 @@
-import { model, Schema, type Document } from 'mongoose';
+import { model, Schema } from 'mongoose';
 import type { Locale } from '~/types/locale';
 
-export interface CategoryInt extends Document {
+export interface CategoryInt {
   _id: string;
   name: string;
   nameLocale: {
@@ -26,6 +26,7 @@ export interface PieceInt {
   title: string;
   year: number;
   dimension: string;
+  imageUrl?: string;
   material: {
     [k in Locale]: string;
   };
@@ -37,9 +38,10 @@ export interface PieceInt {
   tags: string[];
   isShow: boolean;
   productInfo?: ProductInfoInt;
+  priority: number;
 }
 
-export interface WorkInt extends Document {
+export interface WorkInt {
   _id: string;
   title: string;
   year: number;
@@ -88,6 +90,7 @@ export const PieceSchema = new Schema<PieceInt>({
     type: Map,
     of: String,
   },
+  imageUrl: String,
   imageUrls: {
     type: [String],
     required: false,
@@ -106,6 +109,7 @@ export const PieceSchema = new Schema<PieceInt>({
     default: false,
   },
   productInfo: ProductInfoSchema,
+  priority: Number,
 });
 
 export const WorkSchema = new Schema<WorkInt>({
@@ -121,7 +125,7 @@ export const WorkSchema = new Schema<WorkInt>({
   pieces: [PieceSchema],
 });
 
-export interface WorkTitleInt extends Document {
+export interface WorkTitleInt {
   _id: string;
   title: string;
 }
@@ -131,7 +135,7 @@ export interface WorkTimelineInt {
   works: WorkTitleInt[];
 }
 
-export interface PieceLocaleInt extends Document {
+export interface PieceLocaleInt {
   _id: string;
   locale: Locale;
   title: string;
@@ -148,13 +152,13 @@ export interface PieceLocaleInt extends Document {
   workTitle?: string;
 }
 
-export interface PieceSimplifiedInt extends Document {
+export interface PieceSimplifiedInt {
   _id: string;
   title: string;
   imageUrl: string;
 }
 
-export interface PieceWithWorkIdInt extends Document {
+export interface PieceWithWorkIdInt {
   _id: string;
   title: string;
   year: number;
@@ -162,9 +166,10 @@ export interface PieceWithWorkIdInt extends Document {
   tags: string[];
   isShow: boolean;
   workId?: string;
+  priority: number;
 }
 
-export interface WorkLocaleInt extends Document {
+export interface WorkLocaleInt {
   _id: string;
   title: string;
   year: number;
@@ -172,7 +177,7 @@ export interface WorkLocaleInt extends Document {
   pieces: PieceSimplifiedInt[];
 }
 
-export interface WorkImgInt extends Document {
+export interface WorkImgInt {
   _id: string;
   title: string;
   imageUrl: string;
