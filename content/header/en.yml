@@ -12,3 +12,5 @@ withoutVat: Without VAT
 withVat: With VAT
 close: Close
 payment: Proceed to Payment
+itemUnavailable: item(s) unavailable
+item: item(s)

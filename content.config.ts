@@ -23,6 +23,8 @@ const headerSchema = z.object({
   withVat: z.string(),
   close: z.string(),
   payment: z.string(),
+  itemUnavailable: z.string(),
+  item: z.string(),
 });
 
 const footerSchema = z.object({

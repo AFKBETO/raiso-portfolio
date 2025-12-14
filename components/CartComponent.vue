@@ -39,6 +39,54 @@ function onClick(productId: string) {
       />
     </UChip>
     <template #body>
+      <UAccordion
+        v-if="cart[1].length > 0"
+        :items="[{
+          label: `${cart[1].length} ${headerLabels?.itemUnavailable}`,
+        }]"
+        class="rounded-md border-1 border-gray-300 px-2"
+      >
+        <template #content>
+          <div class="grid grid-cols-4 gap-1 mb-2">
+            <div
+              v-for="cartItem in cart[1]"
+              :key="cartItem._id"
+              class="relative group overflow-hidden rounded-lg"
+            >
+              <img
+                class="object-cover w-full h-full transition-transform duration-300 group-hover:scale-110 group-hover:blur-xs"
+                :alt="cartItem.productTitle"
+                :src="parseImageSrc(cartItem.imageUrl, 100)"
+              >
+              <div class="absolute inset-0 flex items-start p-1 justify-end opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                <UButton
+                  icon="i-lucide-trash"
+                  color="error"
+                  @click="() => onClick(cartItem.workId + '-' + cartItem._id)"
+                />
+              </div>
+              <UTooltip
+                :text="parseTitle(cartItem)"
+                :delay-duration="0"
+              >
+                <UButton
+                  class="absolute top-1/2 left-1/2
+                    transform -translate-x-1/2 -translate-y-1/2
+                    opacity-0 group-hover:opacity-100
+                    whitespace-nowrap"
+                  :to="`/works/${cartItem.workId}/pieces/${cartItem._id}`"
+                  color="neutral"
+                  variant="soft"
+                  size="xs"
+                  @click="() => { open = false }"
+                >
+                  Open item
+                </UButton>
+              </UTooltip>
+            </div>
+          </div>
+        </template>
+      </UAccordion>
       <div
         v-if="cartLength > 0"
         class="grid grid-cols-1 gap-2 mt-2"

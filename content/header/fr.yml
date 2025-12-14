@@ -12,3 +12,5 @@ withoutVat: HT
 withVat: TTC
 close: Fermer
 payment: Continuer au Paiement
+itemUnavailable: Article(s) indisponible(s)
+item: article(s)
