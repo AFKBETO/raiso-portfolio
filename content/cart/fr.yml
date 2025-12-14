@@ -1,0 +1,12 @@
+﻿language: fr
+yourCart: Votre Panier
+item: Article
+cartLoading: Charger votre panier...
+emptyCart: Votre panier est vide
+price: Prix
+quantity: Quantité
+amount: Montant
+total: Total 
+withVat: TTC
+itemUnavailable: Article(s) indisponible(s)
+selection: '{0} sur {1} sélectionné(s)'

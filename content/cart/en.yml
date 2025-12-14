@@ -1,0 +1,12 @@
+﻿language: en
+yourCart: Your Cart
+item: Item
+cartLoading: Loading your cart...
+emptyCart: Your cart is empty
+price: Price
+quantity: Quantity
+amount: Amount
+total: Total
+withVat: With VAT
+itemUnavailable: item(s) unavailable
+selection: '{0} of {1} selected'
