@@ -47,6 +47,7 @@ export default defineNuxtConfig({
     public: {
       cdnUrl: '',
       maxSessionAge: 1800,
+      environment: 'dev',
     },
   }, compatibilityDate: '2025-05-15',
   vite: {

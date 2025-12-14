@@ -3,6 +3,7 @@ import type { HeaderCollectionItem } from '@nuxt/content';
 import type { PieceLocaleInt } from '~/database/WorkModel';
 
 const cartCookie = useCart();
+const isCartFeatureEnabled = useFeatureFlag('cart');
 
 const open = ref(false);
 
@@ -153,7 +154,7 @@ function onClick(productId: string) {
         @click="() => { open = false }"
       />
       <UButton
-        v-if="cartLength > 0"
+        v-if="cartLength > 0 && isCartFeatureEnabled"
         color="neutral"
         to="/cart"
         @click="() => { open = false }"

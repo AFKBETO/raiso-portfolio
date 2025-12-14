@@ -7,6 +7,7 @@ const { piece } = defineProps<{
 
 const locale = useNuxtLocale();
 const cart = useCart();
+const isCartFeatureEnabled = useFeatureFlag('cart');
 
 const { data: pieceLabels } = await useAsyncData('/pieceLabels', async () => {
   const pieceLabels = await queryCollection('piece')
@@ -123,12 +124,12 @@ function strikethrough(baseClass: string): string {
           v-model="quantity"
           :min="piece.productInfo.minQuantity ?? 0"
           :max="piece.productInfo.maxQuantity > 0 ? piece.productInfo.maxQuantity : undefined"
-          :disabled="piece.productInfo.isSoldout"
+          :disabled="piece.productInfo.isSoldout || !isCartFeatureEnabled"
           :color="piece.productInfo.isSoldout ? 'neutral' : 'primary'"
         />
         <UButton
           loading-auto
-          :disabled="piece.productInfo.isSoldout"
+          :disabled="piece.productInfo.isSoldout || !isCartFeatureEnabled"
           :variant="piece.productInfo.isSoldout ? 'outline' : 'solid'"
           :color="piece.productInfo.isSoldout ? 'neutral' : 'primary'"
           @click="() => onClick()"
