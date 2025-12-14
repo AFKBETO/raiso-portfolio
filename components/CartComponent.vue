@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import type { HeaderCollectionItem } from '@nuxt/content';
-import type { PieceLocaleInt } from '~/database/WorkModel';
 
 const cartCookie = useCart();
 const isCartFeatureEnabled = useFeatureFlag('cart');
@@ -9,52 +8,10 @@ const open = ref(false);
 
 const { data: headerLabels } = useNuxtData<HeaderCollectionItem>('/header');
 
-interface CartInfoInt {
-  _id: string;
-  title: string;
-  productTitle?: string;
-  price: number;
-  imageUrl: string;
-  workId: string;
-  minQuantity: number;
-  maxQuantity: number;
-  quantity: number;
-}
+const { data: cart } = await useCartInfo();
 
-const { data: cart } = await useAsyncData<CartInfoInt[]>('cart-items', async () => {
-  const result: CartInfoInt[] = [];
-  for (const key in cartCookie.value) {
-    const cartItem = cartCookie.value[key];
-    if (!cartItem || cartItem.quantity === 0) {
-      continue;
-    }
-    const product = await $fetch<PieceLocaleInt>(`/api/works/${cartItem.workId}/pieces/${cartItem.pieceId}`);
-    if (!!product && !!product.productInfo) {
-      result.push({
-        _id: product._id,
-        workId: product.workId,
-        title: product.title,
-        productTitle: product.productInfo.productTitle,
-        price: product.productInfo.price,
-        imageUrl: product.imageUrls[product.primaryImageIndex],
-        minQuantity: product.productInfo.minQuantity,
-        maxQuantity: product.productInfo.maxQuantity,
-        quantity: cartItem.quantity,
-      });
-    }
-  }
-  return result;
-}, { server: false, watch: [cartCookie] });
-
-const cartLength = computed(() => cart.value ? cart.value.length : 0);
-const sum = computed(() => cart.value ? cart.value.reduce((acc, cur) => acc + cur.price * cartCookie.value[cur.workId + '-' + cur._id]!.quantity, 0) : 0);
-
-function parseTitle(product: CartInfoInt): string {
-  if (!product.productTitle) {
-    return product.title;
-  }
-  return `${product.title} | ${product.productTitle}`;
-}
+const cartLength = computed(() => cart.value ? cart.value[0].length : 0);
+const sum = computed(() => cart.value ? cart.value[0].reduce((acc, cur) => acc + cur.amount, 0) : 0);
 
 function onClick(productId: string) {
   cartCookie.value = { ...cartCookie.value, [productId]: undefined };
@@ -71,7 +28,7 @@ function onClick(productId: string) {
     <UChip
       :text="cartLength"
       size="3xl"
-      :show="!!cart && !!cart.length"
+      :show="!!cart[0] && !!cart[0].length"
     >
       <UButton
         size="xl"
@@ -84,9 +41,10 @@ function onClick(productId: string) {
     <template #body>
       <div
         v-if="cartLength > 0"
+        class="grid grid-cols-1 gap-2 mt-2"
       >
         <template
-          v-for="cartItem in cart"
+          v-for="cartItem in cart[0]"
           :key="cartItem.workId + '-' + cartItem._id"
         >
           <UCard variant="outline">
@@ -94,7 +52,7 @@ function onClick(productId: string) {
               <img
                 width="50%"
                 :alt="cartItem.productTitle"
-                :src="parseImageSrc(cartItem.imageUrl, 150)"
+                :src="parseImageSrc(cartItem.imageUrl, 100)"
               >
               <div class="flex flex-col gap-3 justify-between">
                 <div class="flex justify-end">
@@ -119,13 +77,14 @@ function onClick(productId: string) {
                   <UInputNumber
                     v-model="cartCookie[cartItem.workId + '-' + cartItem._id]!.quantity"
                     orientation="vertical"
-                    class="w-16"
+                    size="xs"
+                    class="w-20"
                     :min="cartItem.minQuantity ?? 0"
                     :max="cartItem.maxQuantity > 0 ? cartItem.maxQuantity : undefined"
                   />
                 </div>
                 <p class="font-semibold text-end">
-                  {{ parsePrice(cartCookie[cartItem.workId + '-' + cartItem._id]!.quantity * cartItem.price) }}€
+                  {{ parsePrice(cartItem.amount) }}
                 </p>
               </div>
             </div>

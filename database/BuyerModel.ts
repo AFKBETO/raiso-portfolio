@@ -9,7 +9,7 @@ export interface CartItemInt {
 
 export type CartItemModelType = Model<CartItemInt>;
 
-export interface OrderInt extends Document {
+export interface OrderInt {
   _id: string;
   timestamp: number;
   cart: CartItemInt[];
@@ -92,5 +92,19 @@ export interface ClientCartItemInt {
 }
 
 export interface ClientOrderInt {
-  [k: string]: ClientCartItemInt | undefined;
+  [productId: string]: ClientCartItemInt | undefined;
+}
+
+export interface CartInfoInt {
+  _id: string;
+  title: string;
+  productTitle?: string;
+  price: number;
+  imageUrl: string;
+  workId: string;
+  minQuantity: number;
+  maxQuantity: number;
+  quantity: number;
+  amount: number;
+  isSoldout: boolean;
 }
