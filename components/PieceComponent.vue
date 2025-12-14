@@ -57,6 +57,8 @@ function strikethrough(baseClass: string): string {
   }
   return baseClass;
 }
+
+const currentMedia = ref(piece.primaryImageIndex);
 </script>
 
 <template>
@@ -67,19 +69,24 @@ function strikethrough(baseClass: string): string {
         :media-width="1000"
         class="aspect-square object-scale-down"
         :alt="piece.title"
-        :src="piece.imageUrls[piece.primaryImageIndex]"
+        :src="piece.imageUrls[currentMedia]"
       />
-      <template v-for="i in piece.imageUrls.keys()">
-        <MediaComponent
-          v-if="i !== piece.primaryImageIndex"
-          :key="i"
-          width="100%"
-          :media-width="1000"
-          class="aspect-square object-scale-down"
-          :alt="piece.title + ' - ' + (i + 1)"
-          :src="piece.imageUrls[piece.primaryImageIndex]"
-        />
-      </template>
+      <div class="grid grid-cols-6">
+        <template
+          v-if="piece.imageUrls.length > 1"
+        >
+          <img
+            v-for="i in piece.imageUrls.keys()"
+            :key="i"
+            width="100%"
+            class="aspect-square object-scale-down rounded-md"
+            :class="(i === currentMedia) ? 'border-2 border-double' : ''"
+            :alt="piece.title + ' - ' + (i + 1)"
+            :src="parseImageSrc(piece.imageUrls[i], 100)"
+            @click="() => currentMedia = i"
+          >
+        </template>
+      </div>
     </div>
     <div>
       <p class="text-xl">
