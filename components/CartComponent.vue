@@ -7,9 +7,7 @@ const isCartFeatureEnabled = useFeatureFlag('cart');
 
 const open = ref(false);
 
-const { headerLabels } = defineProps<{
-  headerLabels: HeaderCollectionItem | null;
-}>();
+const { data: headerLabels } = useNuxtData<HeaderCollectionItem>('/header');
 
 interface CartInfoInt {
   _id: string;

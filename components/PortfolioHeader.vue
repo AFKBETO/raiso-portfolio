@@ -198,7 +198,7 @@ const verticalItems = computed<NavigationMenuItem[][]>(() => [[
           </USlideover>
         </div>
       </template>
-      <CartComponent :header-labels="headerLabels" />
+      <CartComponent />
     </div>
   </header>
 </template>
