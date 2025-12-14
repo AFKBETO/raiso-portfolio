@@ -125,7 +125,7 @@ const currentMedia = ref(piece.primaryImageIndex);
         <div
           :class="strikethrough('content-center')"
         >
-          {{ parsePrice(piece.productInfo.price) }} €
+          {{ parsePrice(piece.productInfo.price) }}
         </div>
         <UInputNumber
           v-model="quantity"

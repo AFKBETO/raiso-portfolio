@@ -80,7 +80,7 @@ function onClick(productId: string) {
         icon="i-lucide-shopping-cart"
         color="neutral"
         variant="outline"
-        :label="parsePrice(sum)+'€'"
+        :label="parsePrice(sum)"
       />
     </UChip>
     <template #body>
@@ -116,7 +116,7 @@ function onClick(productId: string) {
                 </ULink>
                 <div class="flex justify-between items-center gap-2">
                   <p class="text-sm text-gray-600 dark:text-gray-400">
-                    {{ parsePrice(cartItem.price) }}€
+                    {{ parsePrice(cartItem.price) }}
                   </p>
                   <UInputNumber
                     v-model="cartCookie[cartItem.workId + '-' + cartItem._id]!.quantity"
@@ -164,7 +164,7 @@ function onClick(productId: string) {
             {{ headerLabels?.payment }}:
           </p>
           <p>
-            {{ parsePrice(sum) }}€
+            {{ parsePrice(sum) }}
           </p>
         </div>
       </UButton>

@@ -40,7 +40,7 @@ function parseTitle(): string {
             {{ parseTitle() }}
           </p>
           <p class="text-sm text-gray-600 dark:text-gray-400">
-            {{ parsePrice(product.price) }}€
+            {{ parsePrice(product.price) }}
           </p>
         </div>
       </template>
