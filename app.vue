@@ -6,6 +6,22 @@ function updateNavbar() {
   largeScreen.value = width >= 768;
 }
 
+const locale = useNuxtLocale();
+
+const { data: _cartLabels } = await useAsyncData('/cart', async () => {
+  const cart = await queryCollection('cart')
+    .where('language', '=', locale.value)
+    .first();
+  if (cart) {
+    return cart;
+  }
+  return queryCollection('cart')
+    .where('language', '=', 'fr')
+    .first();
+}, {
+  watch: [locale],
+});
+
 onMounted(() => {
   updateNavbar();
   window.addEventListener('resize', updateNavbar);

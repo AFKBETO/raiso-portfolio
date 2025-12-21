@@ -9,8 +9,13 @@ export default defineEventHandler(async (_event): Promise<string> => {
     series.description = work.description;
     series.isPureProduct = series.isPureProduct;
     series.pieces = []; */
-    work.showcase = undefined;
+    work.isPureProduct = work.isPureProduct ?? false;
     for (const piece of work.pieces) {
+      if (!piece.imageUrls || !piece.imageUrls.length) {
+        piece.imageUrls = [piece.imageUrl || ''];
+        piece.primaryImageIndex = 0;
+      }
+      piece.isShow = piece.isShow ?? false;
       if (piece.productInfo) {
         piece.productInfo = {
           isSoldout: piece.productInfo.isSoldout ?? false,
@@ -21,6 +26,7 @@ export default defineEventHandler(async (_event): Promise<string> => {
           maxQuantity: piece.productInfo.maxQuantity ?? 0,
         };
       }
+      piece.priority = piece.priority ?? 0;
       /* const newPiece: PieceInt = {
         _id: piece._id,
         title: piece.title,

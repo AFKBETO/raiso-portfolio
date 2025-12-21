@@ -71,6 +71,11 @@ const verticalItems = computed<NavigationMenuItem[][]>(() => [[
     target: '_blank',
   },
   {
+    label: 'User',
+    icon: 'i-lucide-user',
+    to: '/carts',
+  },
+  {
     slot: 'flag',
     children: [{
       icon: iconEn,
@@ -150,6 +155,16 @@ const verticalItems = computed<NavigationMenuItem[][]>(() => [[
         >
           <UIcon
             name="i-lucide-instagram"
+            class="!size-8"
+          />
+        </ULink>
+        <ULink
+          class="align-center"
+          as="button"
+          to="/carts"
+        >
+          <UIcon
+            name="i-lucide-user"
             class="!size-8"
           />
         </ULink>

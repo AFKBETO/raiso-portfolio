@@ -1,7 +1,8 @@
 import { readFileSync } from 'node:fs';
-import jwt from 'jsonwebtoken';
+import { importPKCS8, SignJWT } from 'jose';
 import { BuyerModel } from '~/database/BuyerModel';
 import type { LoginInfo } from '~/types/login';
+import createLog from '~/utils/createLog';
 
 export default defineEventHandler(async (event): Promise<void> => {
   const loginInfo = await readBody<LoginInfo>(event);
@@ -16,10 +17,15 @@ export default defineEventHandler(async (event): Promise<void> => {
       statusMessage: 'Login failed',
     });
   }
+  const privateKeyString = readFileSync(config.privateKeyPath, 'utf8');
+  createLog(privateKeyString);
 
-  const privateKey = readFileSync(config.privateKeyPath, 'utf8');
+  const privateKey = await importPKCS8(privateKeyString, 'Ed25519');
 
-  const token = jwt.sign({ loginInfo }, privateKey);
+  const token = await new SignJWT(loginInfo)
+    .setProtectedHeader({ alg: 'EdDSA' })
+    .setExpirationTime(config.public.maxSessionAge + 's')
+    .sign(privateKey);
 
   setCookie(event, 'auth', token, {
     maxAge: config.public.maxSessionAge,

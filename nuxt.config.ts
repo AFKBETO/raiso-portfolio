@@ -44,6 +44,7 @@ export default defineNuxtConfig({
     googleAppPass: '',
     googleAlias: '',
     privateKeyPath: '',
+    publicKeyPath: '',
     public: {
       cdnUrl: '',
       maxSessionAge: 1800,

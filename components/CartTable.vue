@@ -34,7 +34,7 @@ const columns: TableColumn<CartInfoInt>[] = [
     header: cartLabels.value?.item + 's',
   },
   {
-    accessorKey: 'price',
+    accessorKey: 'sellPrice',
     header: () => h('div', { class: 'text-center' }, cartLabels.value?.price),
   },
   {
@@ -102,9 +102,9 @@ const columns: TableColumn<CartInfoInt>[] = [
         </p>
       </div>
     </template>
-    <template #price-cell="{ row }">
+    <template #sellPrice-cell="{ row }">
       <p class="text-center">
-        {{ parsePrice(row.getValue('price')) }}
+        {{ parsePrice(row.getValue('sellPrice')) }}
       </p>
     </template>
     <template #quantity-cell="{ row }">
@@ -113,7 +113,7 @@ const columns: TableColumn<CartInfoInt>[] = [
         class="w-20 mx-auto flex"
         size="xs"
         :min="row.original.minQuantity"
-        :max="row.original.maxQuantity"
+        :max="row.original.maxQuantity > 0 ? row.original.maxQuantity : undefined"
       />
     </template>
     <template #amount-cell="{ row }">

@@ -1,3 +1,4 @@
+import type { Model, Types } from 'mongoose';
 import { model, Schema } from 'mongoose';
 import type { Locale } from '~/types/locale';
 
@@ -51,6 +52,21 @@ export interface WorkInt {
   };
   pieces: PieceInt[];
 }
+
+type THydratedWorkDocument = Document & {
+  _id: string;
+  title: string;
+  year: number;
+  showcase?: boolean;
+  isPureProduct: boolean;
+  description: {
+    [k in Locale]: string;
+  };
+  pieces: Types.DocumentArray<PieceInt>;
+};
+
+// eslint-disable-next-line @typescript-eslint/no-empty-object-type
+export type WorkModelType = Model<WorkInt, {}, {}, {}, THydratedWorkDocument>;
 
 export const CategorySchema = new Schema<CategoryInt>({
   _id: Schema.Types.ObjectId,
@@ -110,7 +126,7 @@ export const PieceSchema = new Schema<PieceInt>({
   priority: Number,
 });
 
-export const WorkSchema = new Schema<WorkInt>({
+export const WorkSchema = new Schema<WorkInt, WorkModelType>({
   _id: Schema.Types.ObjectId,
   title: String,
   year: Number,
@@ -192,4 +208,4 @@ export interface ProductCardInt {
 }
 
 export const CategoryModel = model<CategoryInt>('Category', CategorySchema, 'categories');
-export const WorkModel = model<WorkInt>('Work', WorkSchema, 'works');
+export const WorkModel = model<WorkInt, WorkModelType>('Work', WorkSchema, 'works');

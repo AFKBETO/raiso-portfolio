@@ -120,7 +120,7 @@ function onClick(productId: string) {
                 </ULink>
                 <div class="flex justify-between items-center gap-2">
                   <p class="text-sm text-gray-600 dark:text-gray-400">
-                    {{ parsePrice(cartItem.price) }}
+                    {{ parsePrice(cartItem.sellPrice) }}
                   </p>
                   <UInputNumber
                     v-model="cartCookie[cartItem.workId + '-' + cartItem._id]!.quantity"

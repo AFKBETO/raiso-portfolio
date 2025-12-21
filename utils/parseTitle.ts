@@ -1,6 +1,6 @@
-import type { CartInfoInt } from '~/database/BuyerModel';
+import type { CartInfoInt, CartItemDetailsInt } from '~/database/BuyerModel';
 
-export default function parseTitle(product: CartInfoInt): string {
+export default function parseTitle(product: CartInfoInt | CartItemDetailsInt): string {
   if (!product.productTitle) {
     return product.title;
   }

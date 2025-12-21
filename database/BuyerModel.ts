@@ -1,57 +1,53 @@
 import { type Types, model, Schema, type Model, type Document } from 'mongoose';
 
 export interface CartItemInt {
-  workId?: string;
-  pieceId?: string;
-  sellPrice?: number;
+  workId: string;
+  pieceId: string;
+  sellPrice: number;
   quantity: number;
 }
-
 export type CartItemModelType = Model<CartItemInt>;
 
-export interface OrderInt {
-  _id: string;
-  timestamp: number;
-  cart: CartItemInt[];
-}
-
-export interface OrderWithUserIdInt {
-  _id: string;
-  userId: string;
-  timestamp: number;
-  cart: CartItemInt[];
-}
-
-type THydratedOrderDocument = {
-  _id: string;
-  userId: string;
-  timestamp: number;
-  cart: Types.DocumentArray<CartItemInt>;
-};
-// eslint-disable-next-line @typescript-eslint/no-empty-object-type
-export type OrderModelType = Model<OrderInt, {}, {}, {}, THydratedOrderDocument>;
-
-export interface BuyerInt extends Document {
-  email: string;
+export interface OrderInfoInt {
   address1: string;
   address2?: string;
   city: string;
   postalCode: string;
   country: string;
   phoneNumber: string;
+  instruction: string;
+}
+
+const orderStatus = ['pending', 'shipping', 'delivered', 'cancelled'] as const;
+export type OrderStatus = typeof orderStatus[number];
+
+export interface OrderInt extends Document {
+  orderInfo: OrderInfoInt;
+  timestamp: number;
+  status: OrderStatus;
+  cart: CartItemInt[];
+}
+type THydratedOrderDocument = {
+  orderInfo: OrderInfoInt;
+  timestamp: number;
+  status: OrderStatus;
+  cart: Types.DocumentArray<CartItemInt>;
+};
+
+interface OrderVirtuals {
+  amount: number;
+}
+// eslint-disable-next-line @typescript-eslint/no-empty-object-type
+export type OrderModelType = Model<OrderInt, {}, {}, OrderVirtuals, THydratedOrderDocument>;
+
+export interface BuyerInt extends Document {
+  email: string;
   orders: OrderInt[];
   secretCode?: string;
 }
 
 type THydratedBuyerDocument = Document & {
-  _id: string;
   email: string;
-  address1: string;
-  address2?: string;
-  city: string;
-  postalCode: string;
-  country: string;
-  phoneNumber: string;
   orders: Types.DocumentArray<OrderInt>;
   secretCode?: string;
 };
@@ -60,26 +56,37 @@ type THydratedBuyerDocument = Document & {
 export type BuyerModelType = Model<BuyerInt, {}, {}, {}, THydratedBuyerDocument>;
 
 const CartItemSchema = new Schema<CartItemInt, CartItemModelType>({
-  workId: { type: Schema.Types.ObjectId, index: true },
-  pieceId: { type: Schema.Types.ObjectId, index: true },
+  workId: { type: String, index: true },
+  pieceId: { type: String, index: true },
   sellPrice: Number,
   quantity: Number,
 }, {
   _id: false,
 });
-export const OrderSchema = new Schema<OrderInt, OrderModelType>({
+
+const OrderInfoSchema = new Schema<OrderInfoInt>({
+  address1: String,
+  address2: String,
+  city: String,
+  postalCode: String,
+  country: String,
+  phoneNumber: String,
+  instruction: String,
+});
+
+// eslint-disable-next-line @typescript-eslint/no-empty-object-type
+const OrderSchema = new Schema<OrderInt, OrderModelType, {}, {}, OrderVirtuals>({
   timestamp: { type: Number, default: Date.now() },
+  orderInfo: OrderInfoSchema,
+  status: { type: String, enum: orderStatus, default: 'pending' },
   cart: [CartItemSchema],
+});
+OrderSchema.virtual('amount').get(function () {
+  return this.cart.reduce((acc, cur) => acc + cur.quantity * (cur.sellPrice ?? 0), 0);
 });
 
 const BuyerSchema = new Schema<BuyerInt, BuyerModelType>({
   email: { type: String, required: true, unique: true, index: true },
-  address1: { type: String, default: '' },
-  address2: { type: String, required: false },
-  city: { type: String, default: '' },
-  postalCode: { type: String, default: '' },
-  country: { type: String, default: '' },
-  phoneNumber: { type: String, default: '' },
   orders: [OrderSchema],
   secretCode: { type: String, default: '' },
 });
@@ -99,7 +106,7 @@ export interface CartInfoInt {
   _id: string;
   title: string;
   productTitle?: string;
-  price: number;
+  sellPrice: number;
   imageUrl: string;
   workId: string;
   minQuantity: number;
@@ -108,3 +115,32 @@ export interface CartInfoInt {
   amount: number;
   isSoldout: boolean;
 }
+
+export interface CartInt {
+  orderInfo: OrderInfoInt;
+  cart: ClientCartItemInt[];
+}
+
+export interface CartIdInt {
+  cartId: string;
+}
+
+export interface CartItemDetailsInt {
+  _id: string;
+  title: string;
+  productTitle?: string;
+  sellPrice: number;
+  imageUrl: string;
+  workId: string;
+  quantity: number;
+  amount: number;
+}
+
+export interface OrderDetailsInt {
+  orderInfo: OrderInfoInt;
+  timestamp: number;
+  status: OrderStatus;
+  cart: CartItemDetailsInt[];
+}
+
+export { OrderSchema };

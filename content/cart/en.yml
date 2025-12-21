@@ -10,3 +10,22 @@ total: Total
 withVat: With VAT
 itemUnavailable: item(s) unavailable
 selection: '{0} of {1} selected'
+address1: Address
+address2: Address Complement
+city: City
+postalCode: Postal Code
+country: Country
+phoneNumber: Phone Number
+instruction: Shipping Instructions
+payment: Proceed to Payment
+yourOrders: Your Orders
+orderDate: Order date
+status: Status
+pending: pending
+shipping: shipping
+delivered: delivered
+cancelled: cancelled
+shippingTo: Shipping to
+loading: Loading...
+error: Error
+logout: Logout

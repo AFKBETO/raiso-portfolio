@@ -10,3 +10,22 @@ total: Total
 withVat: TTC
 itemUnavailable: Article(s) indisponible(s)
 selection: '{0} sur {1} sélectionné(s)'
+address1: Adresse
+address2: Complément d'adresse
+city: Ville
+postalCode: Code Postale
+country: Pays
+phoneNumber: Numéro de téléphone
+instruction: Instructions de Livraison
+payment: Continuer au Paiement
+yourOrders: Vos commandes
+orderDate: Commande effectuée le
+status: Statut
+pending: commandé
+shipping: expédié
+delivered: livré
+cancelled: annulé
+shippingTo: Livraison à
+loading: Chargement...
+error: Erreur
+logout: Déconnexion

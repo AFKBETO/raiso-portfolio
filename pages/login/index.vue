@@ -6,17 +6,26 @@ type LoginState = 'email' | 'code';
 
 const loginState = ref<LoginState>('email');
 const locale = useNuxtLocale();
+const defaultEmailState = {
+  email: undefined,
+};
 
 const emailState = reactive<Partial<LoginSchema>>({
-  email: undefined,
+  ...defaultEmailState,
 });
 
-const codeState = reactive<Partial<CodeSchema>>({
+const defaultCodeState = {
   code: undefined,
+};
+const codeState = reactive<Partial<CodeSchema>>({
+  ...defaultCodeState,
 });
 
 const { maxSessionAge } = useRuntimeConfig().public;
-
+function resetForm() {
+  Object.assign(emailState, defaultEmailState);
+  Object.assign(codeState, defaultCodeState);
+}
 const { query } = useRoute();
 const redirect = query.redirect ? query.redirect.toString() : '';
 
@@ -38,6 +47,11 @@ const { data: loginLabels } = await useAsyncData('login', async () => {
 
 definePageMeta({
   colorMode: 'light',
+  middleware: [
+    function (_to, _from) {
+      resetForm();
+    },
+  ],
 });
 
 function getCodeDescription(codeDescription: string | undefined): string {
@@ -72,6 +86,7 @@ async function onSubmitCode(event: FormSubmitEvent<CodeSchema>) {
     method: 'POST',
     body: { ...event.data, ...emailState },
   });
+  resetForm();
   await navigateTo(redirect);
 }
 </script>

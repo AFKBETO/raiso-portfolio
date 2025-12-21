@@ -29,7 +29,7 @@ export const useCartInfo = () => {
           workId: product.workId,
           title: product.title,
           productTitle: product.productInfo.productTitle,
-          price: product.productInfo.price,
+          sellPrice: product.productInfo.price,
           imageUrl: product.imageUrls[product.primaryImageIndex] || '',
           minQuantity: product.productInfo.minQuantity,
           maxQuantity: product.productInfo.maxQuantity,
