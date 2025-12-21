@@ -26,7 +26,6 @@ export interface PieceInt {
   title: string;
   year: number;
   dimension: string;
-  imageUrl?: string;
   material: {
     [k in Locale]: string;
   };
@@ -90,7 +89,6 @@ export const PieceSchema = new Schema<PieceInt>({
     type: Map,
     of: String,
   },
-  imageUrl: String,
   imageUrls: {
     type: [String],
     required: false,
