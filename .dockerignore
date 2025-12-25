@@ -28,3 +28,5 @@ README.md
 .git
 
 server/api/dev
+docker-compose.yml
+.forgejo

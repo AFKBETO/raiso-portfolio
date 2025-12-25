@@ -25,6 +25,7 @@ jobs:
         id: pre-build
         shell: bash
         run: |
+          echo "${{ forgejo.ref }}"
           echo "sha_short=$(git rev-parse --short HEAD)" >> $FORGEJO_OUTPUT
           echo "git_tag=$(git describe --tags --abbrev=0)" >> $FORGEJO_OUTPUT
       
@@ -32,7 +33,7 @@ jobs:
         id: build
         env:
           IMAGE_NAME: raiso-portfolio
-          TAG: ${{ forgejo.ref_name == 'main' && 'latest' || (startsWith(forgejo.ref, 'ref/tags') && forgejo.ref_name || format('{0}-{1}', forgejo.ref_name, steps.pre-build.outputs.sha_short) ) }}
+          TAG: ${{ forgejo.ref_name == 'main' && 'latest' || (startsWith(forgejo.ref, 'refs/tags') && forgejo.ref_name || format('{0}-{1}', forgejo.ref_name, steps.pre-build.outputs.sha_short) ) }}
         shell: bash
         run: |
           docker build -t ${{ secrets.REGISTRY }}/${{ secrets.OWNER }}/${IMAGE_NAME}:${TAG} .
@@ -67,24 +68,26 @@ jobs:
           echo ${{ secrets.CONTAINER_PAT }} | docker login -u ${{ secrets.CONTAINER_USER }} --password-stdin ${{ secrets.REGISTRY }}
 
       - name: Deploy prod
-        if: ${{ startsWith(forgejo.ref, 'ref/tags') }}
+        if: ${{ startsWith(forgejo.ref, 'refs/tags') }}
         shell: bash
         env:
           ENVIRONMENT: prod
           CDN_URL: ${{ secrets.CDN_URL }}
           MONGO_URI: ${{ secrets.MONGO_URI_PROD }}
           PORT: ${{ secrets.PORT_PROD }}
+          REGISTRY_IMAGE: ${{ needs.build.outputs.image_tag }}
         run: |
           docker compose up -d
 
       - name: Deploy dev
-        if: ${{ ! startsWith(forgejo.ref, 'ref/tags') }}
+        if: ${{ ! startsWith(forgejo.ref, 'refs/tags') }}
         shell: bash
         env:
           ENVIRONMENT: dev
           CDN_URL: ${{ secrets.CDN_URL }}
           MONGO_URI: ${{ secrets.MONGO_URI }}
           PORT: ${{ secrets.PORT }}
+          REGISTRY_IMAGE: ${{ needs.build.outputs.image_tag }}
         run: |
           docker compose up -d
 

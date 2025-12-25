@@ -2,7 +2,7 @@ name: portfolio-${ENVIRONMENT:-dev}
 services:
   portfolio:
     container_name: portfolio-${ENVIRONMENT:-dev}
-    image: ${REGISTRY_IMAGE}:latest
+    image: ${REGISTRY_IMAGE}
     environment:
       - NUXT_PUBLIC_ENVIRONMENT=${ENVIRONMENT:-dev}
       - NUXT_MONGO_URI=${MONGO_URI}
@@ -10,7 +10,7 @@ services:
     restart: always
     pull_policy: always
     ports:
-      - ${PORT}
+      - ${PORT}:3000
 
 
 networks:
