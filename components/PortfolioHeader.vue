@@ -56,24 +56,15 @@ const verticalItems = computed<NavigationMenuItem[][]>(() => [[
     to: '/about',
   },
   {
-    label: headerLabels.value?.shop,
-    to: '/shop',
-  },
-  {
     label: 'Email',
     icon: 'i-lucide-mail',
-    href: 'mailto:buithuhuong0804@gmail.com',
+    href: 'mailto:contact@buithuhuong.work',
   },
   {
     label: 'Instagram',
     icon: 'i-lucide-instagram',
     href: 'https://www.instagram.com/raisohoho/',
     target: '_blank',
-  },
-  {
-    label: 'User',
-    icon: 'i-lucide-user',
-    to: '/carts',
   },
   {
     slot: 'flag',
@@ -131,15 +122,7 @@ const verticalItems = computed<NavigationMenuItem[][]>(() => [[
           {{ headerLabels?.about }}
         </ULink>
         <ULink
-          class="content-center text-black"
-          active-class="underline underline-offset-2"
-          as="button"
-          to="/shop"
-        >
-          {{ headerLabels?.shop }}
-        </ULink>
-        <ULink
-          href="mailto:buithuhuong0804@gmail.com"
+          href="mailto:contact@buithuhuong.work"
           class="align-center"
         >
           <UIcon
@@ -155,16 +138,6 @@ const verticalItems = computed<NavigationMenuItem[][]>(() => [[
         >
           <UIcon
             name="i-lucide-instagram"
-            class="!size-8"
-          />
-        </ULink>
-        <ULink
-          class="align-center"
-          as="button"
-          to="/carts"
-        >
-          <UIcon
-            name="i-lucide-user"
             class="!size-8"
           />
         </ULink>
@@ -213,7 +186,6 @@ const verticalItems = computed<NavigationMenuItem[][]>(() => [[
           </USlideover>
         </div>
       </template>
-      <CartComponent />
     </div>
   </header>
 </template>
