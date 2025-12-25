@@ -12,9 +12,7 @@ const { data: footerLabels } = await useAsyncData('/footer', () => {
   watch: [locale],
 });
 
-const visible = '!fixed bottom-10 end-5 rounded-full';
-const invisible = visible + ' invisible';
-const classNames = ref(invisible);
+const classNames = ref('');
 
 function scrollToTop() {
   window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -22,10 +20,10 @@ function scrollToTop() {
 
 function handleScroll() {
   if (window.scrollY > 0) {
-    classNames.value = visible;
+    classNames.value = '';
   }
   else {
-    classNames.value = invisible;
+    classNames.value = 'invisible';
   }
 };
 
@@ -39,21 +37,18 @@ onUnmounted(() => {
 </script>
 
 <template>
-  <footer class="p-6 bg-white dark:bg-neutral-900 w-full justify-between flex flex-row mt-auto">
+  <footer class="p-6 bg-white dark:bg-neutral-900 w-full justify-around flex flex-row mt-auto">
     <p>
       {{ footerLabels?.body }}
     </p>
-    <p>
-      Powered by <ULink
-        to="https://github.com/AFKBETO"
-        target="_blank"
-        external
-      >AFKBETO</ULink>
-    </p>
+    <ULink
+      to="/legal"
+    >Mentions légales</ULink>
     <UTooltip text="Scroll to top">
       <UButton
         size="xl"
         color="neutral"
+        class="!fixed bottom-10 end-10 rounded-full"
         :class="classNames"
         icon="i-lucide-triangle"
         variant="outline"
