@@ -1,0 +1,39 @@
+﻿on:
+  push:
+
+
+jobs:
+  build:
+    runs-on: docker
+    outputs:
+      image_tag: ${{ steps.build.outputs.image_tag }}
+    steps:
+      - name: Checkout the repository
+        uses: https://data.forgejo.org/actions/checkout@v6
+        with:
+          clean: true
+
+      - name: Login to registry
+        shell: bash
+        run: |
+          echo ${{ secrets.CONTAINER_PAT }} | docker login -u ${{ secrets.CONTAINER_USER }} --password-stdin ${{ secrets.REGISTRY }}
+      
+      - name: Build Dockerfile and push
+        id: build
+        env:
+          IMAGE_NAME: raiso-portfolio
+        shell: bash
+        run: |
+          docker build -t ${{ secrets.REGISTRY }}/${{ secrets.OWNER }}/${IMAGE_NAME}:latest .
+          docker push ${{ secrets.REGISTRY }}/${{ secrets.OWNER }}/${IMAGE_NAME}:latest
+          echo "image_tag=${{ secrets.REGISTRY }}/${{ secrets.OWNER }}/${IMAGE_NAME}:latest" >> $FORGEJO_OUTPUT
+      
+      - name: Postbuild
+        shell: bash
+        run: |
+          echo "Image built is ${{ steps.build.outputs.image_tag }}"
+
+      - name: Cleanup
+        shell: bash
+        if: always()
+        run: docker logout ${{ secrets.REGISTRY }}
