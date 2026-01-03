@@ -25,6 +25,7 @@ Add a ``.env`` file at the project's root directory.
 ```
 NUXT_MONGO_URI=<your-mongo-connection-string>
 NUXT_PUBLIC_CDN_URL=<your-base-cdn-url>
+NUXT_PUBLIC_ENVIRONMENT=dev
 ```
 
 ### Start the development Server
