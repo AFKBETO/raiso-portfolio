@@ -56,6 +56,12 @@ const verticalItems = computed<NavigationMenuItem[][]>(() => [[
     to: '/about',
   },
   {
+    label: headerLabels.value?.shop,
+    icon: 'i-lucide-shopping-basket',
+    href: 'https://shop.buithuhuong.work',
+    target: '_blank',
+  },
+  {
     label: 'Email',
     icon: 'i-lucide-mail',
     href: 'mailto:contact@buithuhuong.work',
@@ -120,6 +126,17 @@ const verticalItems = computed<NavigationMenuItem[][]>(() => [[
           to="/about"
         >
           {{ headerLabels?.about }}
+        </ULink>
+        <ULink
+          href="https://shop.buithuhuong.work"
+          target="_blank"
+          external
+          class="align-center"
+        >
+          <UIcon
+            name="i-lucide-shopping-basket"
+            class="!size-8"
+          />
         </ULink>
         <ULink
           href="mailto:contact@buithuhuong.work"
