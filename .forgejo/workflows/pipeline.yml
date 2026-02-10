@@ -75,7 +75,10 @@ jobs:
           CDN_URL: ${{ secrets.CDN_URL }}
           MONGO_URI: ${{ secrets.MONGO_URI_PROD }}
           PORT: ${{ secrets.PORT_PROD }}
-          REGISTRY_IMAGE: ${{ needs.build.outputs.image_tag }}
+          REGISTRY_IMAGE: ${{ needs.build.outputs.image_tag }}       
+          PORT_DB: ${{ secrets.PORT_DB_PROD }}   
+          MONGO_INITDB_ROOT_USERNAME: ${{ secrets.MONGO_INITDB_ROOT_USERNAME_PROD }}
+          MONGO_INITDB_ROOT_PASSWORD: ${{ secrets.MONGO_INITDB_ROOT_PASSWORD_PROD }}
         run: |
           docker compose up -d
 
@@ -88,6 +91,9 @@ jobs:
           MONGO_URI: ${{ secrets.MONGO_URI }}
           PORT: ${{ secrets.PORT }}
           REGISTRY_IMAGE: ${{ needs.build.outputs.image_tag }}
+          PORT_DB: ${{ secrets.PORT_DB }}
+          MONGO_INITDB_ROOT_USERNAME: ${{ secrets.MONGO_INITDB_ROOT_USERNAME }}
+          MONGO_INITDB_ROOT_PASSWORD: ${{ secrets.MONGO_INITDB_ROOT_PASSWORD }}
         run: |
           docker compose up -d
 
