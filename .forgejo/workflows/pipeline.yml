@@ -76,10 +76,12 @@ jobs:
           MONGO_URI: ${{ secrets.MONGO_URI_PROD }}
           PORT: ${{ secrets.PORT_PROD }}
           REGISTRY_IMAGE: ${{ needs.build.outputs.image_tag }}       
-          PORT_DB: ${{ secrets.PORT_DB_PROD }}   
+          PORT_DB: ${{ secrets.PORT_DB_PROD }}
+          VOLUME_DIR: ${{ secrets.VOLUME_DIR_PROD }}
           MONGO_INITDB_ROOT_USERNAME: ${{ secrets.MONGO_INITDB_ROOT_USERNAME_PROD }}
           MONGO_INITDB_ROOT_PASSWORD: ${{ secrets.MONGO_INITDB_ROOT_PASSWORD_PROD }}
         run: |
+          mkdir -p ${VOLUME_DIR}
           docker compose up -d
 
       - name: Deploy dev
@@ -92,9 +94,11 @@ jobs:
           PORT: ${{ secrets.PORT }}
           REGISTRY_IMAGE: ${{ needs.build.outputs.image_tag }}
           PORT_DB: ${{ secrets.PORT_DB }}
+          VOLUME_DIR: ${{ secrets.VOLUME_DIR }}
           MONGO_INITDB_ROOT_USERNAME: ${{ secrets.MONGO_INITDB_ROOT_USERNAME }}
           MONGO_INITDB_ROOT_PASSWORD: ${{ secrets.MONGO_INITDB_ROOT_PASSWORD }}
         run: |
+          mkdir -p ${VOLUME_DIR}
           docker compose up -d
 
       - name: Cleanup

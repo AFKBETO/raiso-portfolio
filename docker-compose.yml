@@ -25,6 +25,6 @@ services:
     ports:
       - ${PORT_DB:-27018}:27017
     volumes:
-      - ./data:/data/db
-      - ./output:/usr/share/output
+      - ${VOLUME_DIR}/data:/data/db
+      - ${VOLUME_DIR}/output:/usr/share/output
 
