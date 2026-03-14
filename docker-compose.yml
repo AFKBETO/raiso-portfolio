@@ -16,7 +16,7 @@ services:
   
   portfolio-db:
     container_name: portfolio-db-${ENVIRONMENT:-dev}
-    image: mongo:7.0.28
+    image: mongo:8.2.5
     restart: always
     environment:
       MONGO_INITDB_ROOT_USERNAME: ${MONGO_INITDB_ROOT_USERNAME}
